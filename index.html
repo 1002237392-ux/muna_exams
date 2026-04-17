@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التقييم المدرسي - مدرسة إعدادية</title>
+    <title>المنصة الذكية للتقييم - مدرسة إعدادية</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -41,7 +41,12 @@
             margin-bottom: 30px;
         }
 
-        .logo { max-width: 130px; margin-bottom: 15px; }
+        /* شعار الواجهة المحدث */
+        .logo { 
+            max-width: 150px; 
+            height: auto;
+            margin-bottom: 15px; 
+        }
         
         h1 { color: var(--primary-color); margin: 10px 0; font-size: 24px; }
         .coordinator-info { color: var(--accent-color); font-weight: bold; font-size: 18px; margin-bottom: 10px; }
@@ -205,22 +210,21 @@
         </div>
         
         <div class="input-group">
-            <label>أنواع الأسئلة المفضلة في الامتحان (اختر ما يناسبك عموماً):</label>
+            <label>أنواع الأسئلة المفضلة في الامتحان:</label>
             <div class="checkbox-grid">
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة اختيار من متعدد (أمريكية)"> اختيار من متعدد</label>
+                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة اختيار من متعدد"> اختيار من متعدد</label>
                 <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة صح وخطأ"> صح وخطأ</label>
                 <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة مفتوحة قصيرة"> أسئلة مفتوحة قصيرة</label>
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة مقالية / تفكير عليا"> أسئلة مقالية / تفكير عليا</label>
+                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة مقالية / تفكير عليا"> أسئلة مقالية</label>
             </div>
         </div>
 
         <div id="languageOptions" class="language-options">
             <label style="color: #c2185b;">توجيهات لغوية صارمة:</label>
             <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px;">
-                <label class="checkbox-item"><input type="checkbox" id="chkGrammar" value="نعم"> السماح بأسئلة القواعد اللغوية (Grammar)</label>
-                <label class="checkbox-item"><input type="checkbox" id="chkWriting" value="نعم"> السماح بمهمة كتابة تعبيرية / إنشاء (Writing)</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkGrammar" value="نعم"> السماح بأسئلة القواعد اللغوية</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkWriting" value="نعم"> السماح بمهمة كتابة تعبيرية</label>
             </div>
-            <div class="note" style="margin-top: 5px; color: #880e4f;">(إذا لم تحددها، سيُمنع الذكاء الاصطناعي من وضع قواعد أو تعبير).</div>
         </div>
 
         <div class="input-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
@@ -233,55 +237,42 @@
         </div>
 
         <div class="input-group">
-            <label>ملاحظات إضافية للمعلم (توجيهات للذكاء الاصطناعي):</label>
-            <textarea id="skills" placeholder="مثال: ركز على أسئلة التفكير الناقد في القسم الثاني..." rows="3"></textarea>
+            <label>ملاحظات إضافية للمعلم:</label>
+            <textarea id="skills" placeholder="مثال: ركز على أسئلة التفكير الناقد..." rows="3"></textarea>
         </div>
         <button class="main-btn" onclick="generateCreatePrompt()">توليد الأمر الذكي</button>
     </div>
 
     <div id="toolReview" class="card hidden">
-        <h3>تقييم وتحسين امتحان جاهز </h3>
-        <p class="note">هذا الأمر سيجبر الذكاء الاصطناعي على توسيع الامتحان، إصلاح الأخطاء، وإضافة الشعار بشكل صحيح، وسؤالك عن الرغبة في تحميله كملف وورد.</p>
+        <h3>تقييم وتحسين امتحان جاهز</h3>
+        <p class="note">هذا الأمر سيجبر الذكاء الاصطناعي على تحسين وتوسيع الامتحان المرفق.</p>
         <button class="main-btn" onclick="generateReviewPrompt()">توليد الأمر الذكي للتقييم</button>
     </div>
 
     <div id="outputSection" class="card hidden">
-        <h3 style="color: var(--accent-color);">الأمر الذكي جاهز ومقفل بإحكام!</h3>
+        <h3 style="color: var(--accent-color);">الأمر الذكي جاهز!</h3>
         <button class="main-btn" onclick="copyPrompt()" style="background-color: #27ae60; margin-bottom: 15px;">📋 انسخ النص (البرومبت)</button>
         <div id="promptOutput"></div>
         
         <div id="audioToolSection" class="tool-note audio-note hidden">
-            <strong>🎧 أداة مقترحة لتحويل النص إلى صوت (لفهم المسموع):</strong><br>
-            لتحويل النص السماعي الذي سيولده الذكاء الاصطناعي إلى ملف صوتي (MP3) للطلاب، ننصحك باستخدام موقع <a href="https://ttsmaker.com/" target="_blank" style="color: #2980b9; font-weight: bold;">TTSMaker المجاني</a>.<br>
-            <ul style="margin-top: 5px; margin-bottom: 0;">
-                <li>مجاني ولا يحتاج تسجيل دخول.</li>
-                <li>يدعم اللغات (الإنجليزية، العبرية، والعربية).</li>
-                <li>يتيح لك التحكم بسرعة القراءة (لإبطائها لتناسب الطلاب).</li>
-            </ul>
+            <strong>🎧 لتحويل النص السماعي إلى MP3:</strong> استخدم موقع <a href="https://ttsmaker.com/" target="_blank">TTSMaker</a>.
         </div>
 
         <div id="mathScienceToolSection" class="tool-note math-note hidden">
-            <strong>📐 أدوات مقترحة للرسوم البيانية والدوال:</strong><br>
-            لتصميم الرسوم الهندسية والدوال وتصديرها كصورة للامتحان، ننصحك باستخدام:
-            <ul style="margin-top: 5px; margin-bottom: 0;">
-                <li><a href="https://www.desmos.com/calculator" target="_blank" style="color: #0288d1; font-weight: bold;">Desmos</a> (للدوال)</li>
-                <li><a href="https://www.geogebra.org/" target="_blank" style="color: #0288d1; font-weight: bold;">GeoGebra</a> (للهندسة)</li>
-            </ul>
+            <strong>📐 للرسوم الهندسية:</strong> استخدم موقع <a href="https://www.geogebra.org/" target="_blank">GeoGebra</a>.
         </div>
         
-        <h4 style="margin-top: 20px;">اختر المنصة التي تفضلها:</h4>
         <div class="ai-links">
-            <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Claude (الأفضل للملفات)</a>
-            <a href="https://chatgpt.com/" target="_blank" class="ai-btn chatgpt">ChatGPT (يدعم إنشاء Word مباشر)</a>
+            <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Claude</a>
+            <a href="https://chatgpt.com/" target="_blank" class="ai-btn chatgpt">ChatGPT</a>
         </div>
     </div>
 </div>
 
 <script>
     let teacherName = "";
+    // شعار الامتحان (الترويسة) المحدث
     const examBannerLogoUrl = "https://i.postimg.cc/Sx1tnFck/lwgw-byt-hspr.jpg";
-
-    window.onload = toggleSubjectOptions;
 
     function startApp() {
         teacherName = document.getElementById('teacherName').value;
@@ -302,86 +293,33 @@
     function toggleSubjectOptions() {
         const subject = document.getElementById('subject').value;
         const isLanguage = ["اللغة العربية", "اللغة العبرية", "اللغة الإنجليزية"].includes(subject);
-        const langOptions = document.getElementById('languageOptions');
-        if (isLanguage) {
-            langOptions.classList.remove('hidden');
-        } else {
-            langOptions.classList.add('hidden');
-            document.getElementById('chkGrammar').checked = false;
-            document.getElementById('chkWriting').checked = false;
-        }
+        document.getElementById('languageOptions').classList.toggle('hidden', !isLanguage);
     }
 
     function addSectionBlock() {
         const container = document.getElementById('sectionsContainer');
-        const summaryBar = document.getElementById('summaryBar');
-        summaryBar.classList.remove('hidden');
-
+        document.getElementById('summaryBar').classList.remove('hidden');
         const block = document.createElement('div');
         block.className = 'section-block';
         block.innerHTML = `
-            <button type="button" class="delete-btn" onclick="removeSectionBlock(this)" title="حذف القسم">❌</button>
-            <div class="section-header">قسم جديد</div>
+            <button type="button" class="delete-btn" onclick="this.parentElement.remove(); calculateTotals();">❌</button>
             <div class="section-row">
-                <div class="section-col">
-                    <label style="font-size:14px;">المهارة/الموضوع (مثال: فهم المقروء):</label>
-                    <input type="text" class="sec-topic" placeholder="موضوع القسم">
-                </div>
-                <div class="section-col">
-                    <label style="font-size:14px;">عدد الأسئلة:</label>
-                    <input type="number" class="sec-qs" placeholder="كم سؤال؟" min="1" oninput="calculateTotals()">
-                </div>
-                <div class="section-col">
-                    <label style="font-size:14px;">علامة القسم:</label>
-                    <input type="number" class="sec-score" placeholder="مثال: 30" min="1" oninput="calculateTotals()">
-                </div>
+                <div class="section-col"><input type="text" class="sec-topic" placeholder="موضوع القسم"></div>
+                <div class="section-col"><input type="number" class="sec-qs" placeholder="عدد الأسئلة" oninput="calculateTotals()"></div>
+                <div class="section-col"><input type="number" class="sec-score" placeholder="العلامة" oninput="calculateTotals()"></div>
             </div>
         `;
         container.appendChild(block);
-        updateSectionHeaders();
         calculateTotals();
-    }
-
-    function removeSectionBlock(btn) {
-        btn.parentElement.remove();
-        updateSectionHeaders();
-        calculateTotals();
-        
-        const container = document.getElementById('sectionsContainer');
-        if(container.children.length === 0) {
-            document.getElementById('summaryBar').classList.add('hidden');
-        }
-    }
-
-    function updateSectionHeaders() {
-        const headers = document.querySelectorAll('.section-block .section-header');
-        headers.forEach((header, index) => {
-            header.innerText = `القسم ${index + 1}`;
-        });
     }
 
     function calculateTotals() {
-        let totalQs = 0;
-        let totalScore = 0;
-        
-        document.querySelectorAll('.sec-qs').forEach(input => {
-            totalQs += parseInt(input.value) || 0;
-        });
-        
-        document.querySelectorAll('.sec-score').forEach(input => {
-            totalScore += parseInt(input.value) || 0;
-        });
-
-        document.getElementById('totalQs').innerText = totalQs;
-        document.getElementById('totalScore').innerText = totalScore;
-
-        const summaryBar = document.getElementById('summaryBar');
-        if (totalScore > 100) {
-            summaryBar.classList.add('error');
-            document.getElementById('totalScore').innerText = totalScore + " (تجاوزت 100!)";
-        } else {
-            summaryBar.classList.remove('error');
-        }
+        let qs = 0, score = 0;
+        document.querySelectorAll('.sec-qs').forEach(i => qs += parseInt(i.value) || 0);
+        document.querySelectorAll('.sec-score').forEach(i => score += parseInt(i.value) || 0);
+        document.getElementById('totalQs').innerText = qs;
+        document.getElementById('totalScore').innerText = score;
+        document.getElementById('summaryBar').classList.toggle('error', score > 100);
     }
 
     function addTextBlock(type) {
@@ -390,11 +328,8 @@
         block.className = 'text-block';
         block.innerHTML = `
             <button type="button" class="delete-btn" onclick="this.parentElement.remove()">❌</button>
-            <h4 style="margin-top: 0; color: #333;">${type}</h4>
-            <div style="display: flex; gap: 10px;">
-                <div style="flex: 2;"><input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}"></div>
-                <div style="flex: 1;"><input type="number" class="text-lines" placeholder="عدد الأسطر"></div>
-            </div>
+            <h4>${type}</h4>
+            <input type="text" class="text-topic" placeholder="الموضوع..." data-type="${type}">
         `;
         container.appendChild(block);
     }
@@ -403,145 +338,52 @@
         const subject = document.getElementById('subject').value;
         const grade = document.getElementById('grade').value;
         const skills = document.getElementById('skills').value;
-        const isLanguage = ["اللغة العربية", "اللغة العبرية", "اللغة الإنجليزية"].includes(subject);
-        const isMathScience = ["الرياضيات", "العلوم"].includes(subject);
-
-        // --- معالجة لغة الامتحان لتجنب الترجمة الخاطئة ---
-        let examLanguageInstruction = "";
-        if (subject === "اللغة العبرية") {
-            examLanguageInstruction = "🔴 لغة الامتحان (تنبيه حرج جداً): يجب كتابة نصوص الفهم والأسئلة والخيارات والتعليمات باللغة العبرية (עברית) حصراً! يُمنع منعاً باتاً كتابة أو ترجمة محتوى الامتحان إلى العربية.";
-        } else if (subject === "اللغة الإنجليزية") {
-            examLanguageInstruction = "🔴 لغة الامتحان (تنبيه حرج جداً): يجب كتابة نصوص الفهم والأسئلة والخيارات والتعليمات باللغة الإنجليزية (English) حصراً! يُمنع منعاً باتاً كتابة أو ترجمة محتوى الامتحان إلى العربية.";
-        } else {
-            examLanguageInstruction = "🔴 لغة الامتحان: اكتب محتوى الامتحان باللغة العربية.";
-        }
-        // ------------------------------------------------
-
-        let sectionsPrompt = "";
-        let totalExamScore = document.getElementById('totalScore').innerText;
-        const sectionBlocks = document.querySelectorAll('.section-block');
-        
-        if (sectionBlocks.length > 0) {
-            sectionsPrompt = `\n🔴 هيكل الامتحان وتوزيع العلامات (إلزامي وتطبيق حرفي):\nيجب أن يتكون الامتحان من ${sectionBlocks.length} أقسام موزعة كالتالي (مجموع العلامات ${totalExamScore}):\n`;
-            sectionBlocks.forEach((block, index) => {
-                const topic = block.querySelector('.sec-topic').value || `القسم ${index + 1}`;
-                const qs = block.querySelector('.sec-qs').value || "عدة";
-                const score = block.querySelector('.sec-score').value || "0";
-                
-                sectionsPrompt += `- القسم ${index + 1}: مهارة/موضوع [${topic}] - يتكون من (${qs} أسئلة) - مجموع علامات هذا القسم: (${score} نقطة). (قم بتوزيع هذه العلامات على الأسئلة بوضوح وبشكل متساوٍ).\n`;
-            });
-        }
-
-        const checkedTypes = document.querySelectorAll('.q-type:checked');
-        let selectedQTypes = Array.from(checkedTypes).map(cb => cb.value).join('، ');
-        let qTypesString = selectedQTypes ? `نوّع الأسئلة لتشمل: ${selectedQTypes}` : "";
+        const isAudio = !!document.querySelector('[data-type="فهم مسموع"]');
 
         let languageStrictRules = "";
-        if (isLanguage) {
-            const hasGrammar = document.getElementById('chkGrammar').checked;
-            const hasWriting = document.getElementById('chkWriting').checked;
-            
-            if (!hasGrammar) languageStrictRules += "🔴 يُمنع منعاً باتاً إدراج أي أسئلة قواعد لغوية (Grammar/לשון) في الامتحان.\n";
-            if (!hasWriting) languageStrictRules += "🔴 يُمنع منعاً باتاً إدراج أي مهام كتابة تعبيرية أو إنشاء (Writing/הבעה) في الامتحان.\n";
+        if (subject === "اللغة العبرية") {
+            languageStrictRules = "🔴 لغة الامتحان: يجب كتابة كل النصوص والأسئلة بالعبرية حصراً. يُمنع استخدام العربية تماماً.";
+        } else if (subject === "اللغة الإنجليزية") {
+            languageStrictRules = "🔴 لغة الامتحان: يجب كتابة كل النصوص والأسئلة بالإنجليزية حصراً. يُمنع استخدام العربية تماماً.";
         }
 
-        let textsPromptInfo = "";
-        let isAudio = false;
-        const textBlocks = document.querySelectorAll('#dynamicTextsContainer .text-block');
-        if (textBlocks.length > 0) {
-            textsPromptInfo = "\n🔴 نصوص الفهم (ألّفها بنفسك بناءً على التالي):\n";
-            textBlocks.forEach((block, index) => {
-                const type = block.querySelector('.text-topic').getAttribute('data-type');
-                const topic = block.querySelector('.text-topic').value || "موضوع عام";
-                const lines = block.querySelector('.text-lines').value;
-                
-                if (type.includes("مسموع")) {
-                    textsPromptInfo += `${index + 1}. نص ${type} حول: "${topic}". 🔴 (إلزامي جداً: يجب أن يكون النص السماعي قصيراً ومكثفاً بحد أقصى 120 إلى 150 كلمة أي لا يتجاوز 800 حرف نهائياً، ليتوافق مع القيود المجانية لبرامج تحويل النص لصوت).\n`;
-                    textsPromptInfo += "  * (للمعلم فقط) اكتب هذا النص السماعي في النهاية أو في ملف منفصل كما سيُطلب منك لاحقاً.\n";
-                    isAudio = true;
-                } else {
-                    let lengthRule = lines ? `طوله حوالي ${lines * 12} كلمة (ما يعادل ${lines} أسطر)` : "طول مناسب";
-                    textsPromptInfo += `${index + 1}. نص ${type} حول: "${topic}". (${lengthRule}).\n`;
-                }
-            });
-        }
-
-        let directionText = subject === "اللغة الإنجليزية" ? "من اليسار إلى اليمين (LTR)" : "من اليمين إلى اليسار (RTL)";
-
-        let mathSciencePrompt = isMathScience ? "\n- 🔴 تنبيه للرياضيات/العلوم: إذا كان السؤال يتطلب رسماً بيانياً أو شكلاً هندسياً، اترك مساحة فارغة في ملف الـ Word واكتب (أدرج الرسم البياني هنا)، لكي يقوم المعلم بإضافته لاحقاً." : "";
-
-        // دالة تحديد شكل التحميل النهائي بناءً على وجود نص سماعي أم لا
-        let finalDownloadStep = `🔴 خطوة أخيرة (إجبارية): بعد عرض الامتحان بالكامل مع المرشد، اسألني نصاً في النهاية:
-"هل ترغب في تحويل هذا الامتحان إلى ملف Word (.docx) منسق وجاهز للطباعة والتحميل؟" (وانتظر إجابتي).`;
-
-        if (isAudio) {
-            finalDownloadStep = `🔴 خطوة أخيرة (إجبارية): بعد عرض الامتحان بالكامل مع المرشد، اسألني نصاً في النهاية:
-"هل ترغب في تحويل هذا الامتحان إلى ملفات Word (.docx) جاهزة للتحميل؟"
-وعند موافقتي، يجب عليك بناء **ملفين منفصلين**:
-1. ملف 1 (نسخة الطالب): امتحان الطالب الجاهز للطباعة (يحتوي على نصوص الفهم المقروء وجميع الأسئلة بما فيها أسئلة المسموع، ولكنه **خالٍ تماماً** من النص السماعي ومن مرشد التصليح).
-2. ملف 2 (نسخة المعلم): يحتوي حصرياً على "النص السماعي (Listening Script)" الخاص بالمعلم، و "مرشد التصليح (מחוון)".`;
-        }
-
-        const prompt = `🔴 أمر تنفيذي آلي وصارم: قم ببناء الامتحان الآن فوراً كملف جاهز دون أي مقدمات.
-
+        const prompt = `🔴 قم ببناء امتحان كامل الآن:
 المادة: ${subject}
 الصف: ${grade}
-${sectionsPrompt}
-
-🔴 قيود المحتوى (الالتزام الإجباري):
-${examLanguageInstruction}
-1. المنهاج: المحتوى والمصطلحات يجب أن تتوافق حصرياً مع المنهاج التعليمي للمدارس العربية في إسرائيل.
 ${languageStrictRules}
-${qTypesString}
-${textsPromptInfo}
-${mathSciencePrompt}
 
-🔴 التنسيق الإلزامي للملف:
-- أدرج هذه الترويسة كصورة فعلية في أعلى الصفحة الأولى باستخدام كود الماركدوان التالي: ![الترويسة](${examBannerLogoUrl})
-- اتجاه الكتابة: ${directionText}.
-- أضف مساحة لاسم الطالب والتاريخ.
-- أضف "מחוון" (مرشد تصليح) مفصل في نهاية الامتحان يضم الإجابات وتوزيع العلامات.
-- ملاحظات المعلم: ${skills}
+🔴 التنسيق الإلزامي:
+- أدرج ترويسة المدرسة في أعلى الصفحة الأولى باستخدام هذا الرابط: ![ترويسة المدرسة](${examBannerLogoUrl})
+- إذا وجد نص سماعي، اجعله بحد أقصى 150 كلمة (أقل من 900 حرف) ليتوافق مع برامج الصوت.
+- أضف مرشد تصليح (מחוון) في النهاية.
+- الملاحظات: ${skills}
 
-${finalDownloadStep}`;
+🔴 خطوة أخيرة: بعد عرض الامتحان، اسألني إذا كنت أرغب في تحميله كملف Word.`;
 
-        displayPrompt(prompt, isAudio, isMathScience);
+        displayPrompt(prompt, isAudio, ["الرياضيات", "العلوم"].includes(subject));
     }
 
     function generateReviewPrompt() {
-        const prompt = `🔴 أمر تنفيذي مباشر: سأرفق لك مسودة امتحان. قم بتوسيعه، تحسينه، وإعادة صياغته فوراً.
-
-أرجو تطبيق التعديلات التالية على الامتحان المرفق:
-1. توسيع الامتحان: أضف المزيد من الأسئلة ليكون أكثر شمولية.
-2. 🔴 حافظ على لغة الامتحان المرفق: إذا كان الامتحان المرفق باللغة العبرية فاكتب التعديلات بالعبرية، وإذا كان بالإنجليزية فاكتب بالإنجليزية. لا تترجمه للعربية!
-3. إذا كان هناك نص فهم مقروء، تأكد أنه طويل ومناسب للإعدادية.
-4. الترويسة: أدرج هذه الترويسة العريضة في رأس الامتحان باستخدام الماركدوان: ![الترويسة](${examBannerLogoUrl})
-5. تأكد من توافقه مع المنهاج التعليمي للمدارس العربية في إسرائيل.
-6. قدم الامتحان المعدل وضع مرشد التصليح (מחוון) في النهاية.
-7. 🔴 هام جداً: إذا كان هناك نص "فهم مسموع"، يجب التأكد من تقليصه وضبطه بحيث لا يتجاوز 150 كلمة نهائياً (أقل من 900 حرف كحد أقصى) ليتوافق مع قيود برامج تحويل الصوت المجانية.
-
-🔴 خطوة أخيرة (إجبارية): بعد أن تنتهي من عرض الامتحان المعدل، اسألني هذا السؤال نصاً:
-"هل ترغب في تحميل هذا الامتحان المعدل كملف Word منسق وجاهز للطباعة؟" (وانتظر إجابتي).
-* ملاحظة هامة: إذا كان الامتحان يحتوي على قسم "فهم مسموع"، عند موافقتي على التحميل، قم ببناء ملفين: الأول للطالب (الامتحان دون النص السماعي ودون التصليح)، والثاني للمعلم (يحتوي النص السماعي ومرشد التصليح).`;
-
-        displayPrompt(prompt, false, false); 
+        const prompt = `🔴 قم بمراجعة الامتحان المرفق وتحسينه:
+1. أدرج ترويسة المدرسة المحدثة في أعلى الامتحان: ![الترويسة](${examBannerLogoUrl})
+2. حافظ على لغة الامتحان الأصلية (إذا كان عبرياً ابقِه عبرياً).
+3. اضبط النص السماعي (إن وجد) ليكون أقل من 900 حرف.
+4. أضف مرشد تصليح مفصل.
+5. اسألني في النهاية عن رغبتي في التحميل كملف Word.`;
+        displayPrompt(prompt, false, false);
     }
 
-    function displayPrompt(text, isAudio, isMathScience) {
+    function displayPrompt(text, isAudio, isMath) {
         document.getElementById('promptOutput').innerText = text;
-        
-        // إظهار أو إخفاء الملاحظات التقنية بناءً على نوع الامتحان
         document.getElementById('audioToolSection').classList.toggle('hidden', !isAudio);
-        document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMathScience);
-
+        document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMath);
         document.getElementById('outputSection').classList.remove('hidden');
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
     function copyPrompt() {
-        const text = document.getElementById('promptOutput').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("تم نسخ الأمر الذكي! الصقه الآن في الذكاء الاصطناعي.");
+        navigator.clipboard.writeText(document.getElementById('promptOutput').innerText).then(() => {
+            alert("تم نسخ الأمر الذكي!");
         });
     }
 </script>
