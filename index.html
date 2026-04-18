@@ -41,7 +41,6 @@
             margin-bottom: 30px;
         }
 
-        /* شعار المنصة في الواجهة */
         .logo { 
             max-width: 150px; 
             height: auto;
@@ -104,7 +103,6 @@
             position: relative;
         }
         
-        .section-header { font-weight: bold; color: var(--primary-color); margin-bottom: 10px; }
         .section-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-col { flex: 1; min-width: 150px; }
 
@@ -126,9 +124,7 @@
 
         .text-block { background: #fff; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-top: 10px; position: relative; }
         .delete-btn { position: absolute; top: 10px; left: 10px; background: #e74c3c; width: 25px; height: 25px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color:white; border:none; cursor:pointer;}
-        .delete-btn:hover { background: #c0392b; }
-        
-        .note { font-size: 13px; color: #666; font-weight: normal; }
+
         .language-options { background-color: #fce4ec; border: 1px solid #f8bbd0; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
 
         .tool-note { padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; }
@@ -155,7 +151,7 @@
         <img src="https://i.postimg.cc/G3ghK9PH/sml-byt-hspr.png" alt="شعار المدرسة" class="logo">
         <h1>المنصة الذكية لدعم التقييم والقياس</h1>
         <div class="coordinator-info">بإرشاد مركزة التقييم: منى مصطفى</div>
-        <p class="welcome-msg">"زميلي المعلم، زميلتي المعلمة.. يسعدني جداً أن أكون بجانبكم لنرتقي معاً بجودة تقييم طلابنا وندعم مسيرتهم التعليمية بكل مهنية وحب."</p>
+        <p class="welcome-msg">"زميلي المعلم، زميلتي المعلمة.. يسعدني جداً أن أكون بجانبكم لنرتقي معاً بجودة تقييم طلابنا."</p>
     </header>
 
     <div id="step1" class="card">
@@ -168,16 +164,16 @@
         <h3 id="personalizedWelcome"></h3>
         <p>ماذا تود أن نفعل اليوم؟</p>
         <div style="display: flex; gap: 10px;">
-            <button class="main-btn" onclick="showTool('create')">بناء امتحان جديد (Word)</button>
-            <button class="main-btn" onclick="showTool('review')">تحسين وتقييم امتحان جاهز</button>
+            <button class="main-btn" onclick="showTool('create')">بناء امتحان جديد</button>
+            <button class="main-btn" onclick="showTool('review')">تحسين امتحان جاهز</button>
         </div>
     </div>
 
     <div id="toolCreate" class="card hidden">
-        <h3>بناء امتحان جديد منسق ودقيق</h3>
+        <h3>بناء امتحان جديد منسق</h3>
         <div style="display: flex; gap: 15px; margin-bottom: 15px;">
             <div style="flex: 2;">
-                <label>الموضوع الأساسي:</label>
+                <label>المادة:</label>
                 <select id="subject" onchange="toggleSubjectOptions()">
                     <option value="اللغة العربية">اللغة العربية</option>
                     <option value="اللغة العبرية">اللغة العبرية</option>
@@ -185,79 +181,52 @@
                     <option value="الرياضيات">الرياضيات</option>
                     <option value="العلوم">العلوم</option>
                     <option value="الجغرافيا">الجغرافيا</option>
-                    <option value="التاريخ">التاريخ</option>
-                    <option value="الدين">الدين</option>
-                    <option value="المدنيات">المدنيات</option>
                 </select>
             </div>
             <div style="flex: 1;">
                 <label>الصف:</label>
-                <input type="text" id="grade" placeholder="مثلاً: السابع">
+                <input type="text" id="grade" placeholder="مثلاً: الثامن">
             </div>
         </div>
 
-        <div class="input-group" style="background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #90caf9;">
-            <label style="color: #1565c0;">تخطيط هيكل الامتحان وتوزيع العلامات:</label>
-            <p class="note">قم بإضافة أقسام للامتحان وتحديد مواضيعها براحتك دون فقدان البيانات.</p>
-            
-            <button type="button" class="add-btn btn-section" onclick="addSectionBlock()">➕ إضافة قسم جديد</button>
-            
-            <div id="sectionsContainer" style="margin-top: 15px;"></div>
-            
+        <div class="input-group" style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+            <label>أقسام الامتحان وتوزيع العلامات:</label>
+            <button type="button" class="add-btn btn-section" onclick="addSectionBlock()">➕ إضافة قسم</button>
+            <div id="sectionsContainer"></div>
             <div id="summaryBar" class="summary-bar hidden">
-                إجمالي الأسئلة: <span id="totalQs">0</span> | إجمالي العلامات: <span id="totalScore">0</span>
+                الأسئلة: <span id="totalQs">0</span> | العلامات: <span id="totalScore">0</span>
             </div>
         </div>
         
-        <div class="input-group">
-            <label>أنواع الأسئلة المفضلة في الامتحان:</label>
-            <div class="checkbox-grid">
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة اختيار من متعدد"> اختيار من متعدد</label>
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة صح وخطأ"> صح وخطأ</label>
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة مفتوحة قصيرة"> أسئلة مفتوحة قصيرة</label>
-                <label class="checkbox-item"><input type="checkbox" class="q-type" value="أسئلة مقالية / تفكير عليا"> أسئلة مقالية</label>
-            </div>
-        </div>
-
         <div id="languageOptions" class="language-options">
-            <label style="color: #c2185b;">توجيهات لغوية صارمة:</label>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px;">
-                <label class="checkbox-item"><input type="checkbox" id="chkGrammar" value="نعم"> السماح بأسئلة القواعد اللغوية</label>
-                <label class="checkbox-item"><input type="checkbox" id="chkWriting" value="نعم"> السماح بمهمة كتابة تعبيرية</label>
+            <label>خيارات لغوية:</label>
+            <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" id="chkGrammar"> أسئلة قواعد</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkWriting"> تعبير كتابي</label>
             </div>
         </div>
 
-        <div class="input-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-            <label style="font-weight: 600; margin-bottom: 10px;">إدراج نصوص / قطع (اختياري):</label>
-            <div style="display: flex; flex-wrap: wrap;">
-                <button type="button" class="add-btn btn-reading" onclick="addTextBlock('فهم مقروء')">➕ نص مقروء</button>
-                <button type="button" class="add-btn btn-listening" onclick="addTextBlock('فهم مسموع')">➕ نص مسموع</button>
-            </div>
+        <div class="input-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
+            <label>نصوص الفهم (اختياري):</label>
+            <button type="button" class="add-btn btn-reading" onclick="addTextBlock('فهم مقروء')">➕ نص مقروء</button>
+            <button type="button" class="add-btn btn-listening" onclick="addTextBlock('فهم مسموع')">➕ نص مسموع</button>
             <div id="dynamicTextsContainer"></div>
         </div>
 
-        <div class="input-group">
-            <label>ملاحظات إضافية للمعلم:</label>
-            <textarea id="skills" placeholder="مثال: ركز على أسئلة التفكير الناقد..." rows="3"></textarea>
-        </div>
+        <textarea id="skills" placeholder="ملاحظات إضافية..." rows="3"></textarea>
         <button class="main-btn" onclick="generateCreatePrompt()">توليد الأمر الذكي</button>
     </div>
 
     <div id="toolReview" class="card hidden">
         <h3>تقييم وتحسين امتحان جاهز</h3>
-        <p class="note">هذا الأمر سيجبر الذكاء الاصطناعي على تحسين وتوسيع الامتحان المرفق.</p>
-        <div style="margin-bottom: 15px;">
-            <label>اختر مادة الامتحان المرفق لتطبيق الشروط بدقة:</label>
-            <select id="reviewSubject" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
-                <option value="عام">عام / أخرى</option>
-                <option value="الرياضيات">الرياضيات</option>
-                <option value="العلوم">العلوم</option>
-                <option value="اللغة العربية">اللغة العربية</option>
-                <option value="اللغة العبرية">اللغة العبرية</option>
-                <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
-            </select>
-        </div>
-        <button class="main-btn" onclick="generateReviewPrompt()">توليد الأمر الذكي للتقييم</button>
+        <label>اختر مادة الامتحان المرفق:</label>
+        <select id="reviewSubject">
+            <option value="عام">عام</option>
+            <option value="الرياضيات">الرياضيات</option>
+            <option value="العلوم">العلوم</option>
+            <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+        </select>
+        <button class="main-btn" onclick="generateReviewPrompt()" style="margin-top: 15px;">توليد أمر التحسين</button>
     </div>
 
     <div id="outputSection" class="card hidden">
@@ -265,13 +234,8 @@
         <button class="main-btn" onclick="copyPrompt()" style="background-color: #27ae60; margin-bottom: 15px;">📋 انسخ النص (البرومبت)</button>
         <div id="promptOutput"></div>
         
-        <div id="audioToolSection" class="tool-note audio-note hidden">
-            <strong>🎧 لتحويل النص السماعي إلى MP3:</strong> استخدم موقع <a href="https://ttsmaker.com/" target="_blank">TTSMaker</a>.
-        </div>
-
-        <div id="mathScienceToolSection" class="tool-note math-note hidden">
-            <strong>📐 للرسوم الهندسية والدوال:</strong> استخدم موقع <a href="https://www.desmos.com/calculator" target="_blank">Desmos</a> أو <a href="https://www.geogebra.org/" target="_blank">GeoGebra</a>.
-        </div>
+        <div id="audioToolSection" class="tool-note audio-note hidden"><strong>🎧 للمسموع:</strong> استخدم <a href="https://ttsmaker.com/" target="_blank">TTSMaker</a>.</div>
+        <div id="mathScienceToolSection" class="tool-note math-note hidden"><strong>📐 للرسوم:</strong> استخدم <a href="https://www.desmos.com/calculator" target="_blank">Desmos</a>.</div>
         
         <div class="ai-links">
             <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Claude</a>
@@ -282,29 +246,25 @@
 
 <script>
     let teacherName = "";
-    // شعار الترويسة العريضة للامتحانات
     const examBannerLogoUrl = "https://i.postimg.cc/Sx1tnFck/lwgw-byt-hspr.jpg";
 
     function startApp() {
         teacherName = document.getElementById('teacherName').value;
-        if (teacherName.trim() === "") { alert("أدخل اسمك لنبدأ"); return; }
+        if (!teacherName) { alert("من فضلك أدخل اسمك"); return; }
         document.getElementById('step1').classList.add('hidden');
         document.getElementById('step2').classList.remove('hidden');
         document.getElementById('personalizedWelcome').innerText = `أهلاً بك يا أستاذ/ة ${teacherName}`;
     }
 
     function showTool(type) {
-        document.getElementById('toolCreate').classList.add('hidden');
-        document.getElementById('toolReview').classList.add('hidden');
+        document.getElementById('toolCreate').classList.toggle('hidden', type !== 'create');
+        document.getElementById('toolReview').classList.toggle('hidden', type !== 'review');
         document.getElementById('outputSection').classList.add('hidden');
-        if (type === 'create') document.getElementById('toolCreate').classList.remove('hidden');
-        else document.getElementById('toolReview').classList.remove('hidden');
     }
 
     function toggleSubjectOptions() {
-        const subject = document.getElementById('subject').value;
-        const isLanguage = ["اللغة العربية", "اللغة العبرية", "اللغة الإنجليزية"].includes(subject);
-        document.getElementById('languageOptions').classList.toggle('hidden', !isLanguage);
+        const sub = document.getElementById('subject').value;
+        document.getElementById('languageOptions').classList.toggle('hidden', !sub.includes("اللغة"));
     }
 
     function addSectionBlock() {
@@ -315,13 +275,11 @@
         block.innerHTML = `
             <button type="button" class="delete-btn" onclick="this.parentElement.remove(); calculateTotals();">❌</button>
             <div class="section-row">
-                <div class="section-col"><input type="text" class="sec-topic" placeholder="موضوع القسم"></div>
-                <div class="section-col"><input type="number" class="sec-qs" placeholder="عدد الأسئلة" oninput="calculateTotals()"></div>
+                <div class="section-col"><input type="text" class="sec-topic" placeholder="الموضوع"></div>
+                <div class="section-col"><input type="number" class="sec-qs" placeholder="الأسئلة" oninput="calculateTotals()"></div>
                 <div class="section-col"><input type="number" class="sec-score" placeholder="العلامة" oninput="calculateTotals()"></div>
-            </div>
-        `;
+            </div>`;
         container.appendChild(block);
-        calculateTotals();
     }
 
     function calculateTotals() {
@@ -339,121 +297,68 @@
         block.className = 'text-block';
         block.innerHTML = `
             <button type="button" class="delete-btn" onclick="this.parentElement.remove()">❌</button>
-            <h4 style="margin-top: 0; color: #333;">${type}</h4>
+            <h4 style="margin:0 0 10px 0;">${type}</h4>
             <div style="display: flex; gap: 10px;">
-                <div style="flex: 2;"><input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}"></div>
-                <div style="flex: 1;"><input type="number" class="text-lines" placeholder="عدد الأسطر"></div>
-            </div>
-        `;
+                <input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}">
+                <input type="number" class="text-lines" placeholder="الأسطر" style="width:80px">
+            </div>`;
         container.appendChild(block);
     }
 
+    // وظيفة بناء قواعد التنسيق ديناميكياً
+    function getFormattingRules(sub) {
+        if (sub === "اللغة الإنجليزية") {
+            return `🔴 إعدادات برمجية للوورد (English - LTR):
+1. اتجاه النص (LTR): من اليسار لليمين.
+2. المحاذاة: لليسار.
+3. الخط: Arial أو Times New Roman.
+4. تعطيل BIDI تماماً.`;
+        } else {
+            let mathRule = (sub === "الرياضيات" || sub === "العلوم") ? "\n4. 🔴 للمعادلات الإنجليزية: استخدم (Runs) مستقلة باتجاه LTR لضمان عدم انعكاس الرموز." : "";
+            return `🔴 إعدادات برمجية للوورد (Arabic/Hebrew - RTL):
+1. اتجاه النص (RTL): من اليمين لليسار.
+2. الخط: Arial أو Tahoma (للـ Ascii و Complex Script).
+3. تفعيل BIDI للكلمات العربية/العبرية.${mathRule}`;
+        }
+    }
+
     function generateCreatePrompt() {
-        const subject = document.getElementById('subject').value;
+        const sub = document.getElementById('subject').value;
         const grade = document.getElementById('grade').value;
-        const skills = document.getElementById('skills').value;
-        const isMathScience = ["الرياضيات", "العلوم"].includes(subject);
-        
-        let isAudio = false;
-        let textsPromptInfo = "";
-        
-        const textBlocks = document.querySelectorAll('#dynamicTextsContainer .text-block');
-        if (textBlocks.length > 0) {
-            textsPromptInfo = "\n🔴 نصوص الفهم المطلوبة:\n";
-            textBlocks.forEach((block, index) => {
-                const type = block.querySelector('.text-topic').getAttribute('data-type');
-                const topic = block.querySelector('.text-topic').value || "موضوع عام";
-                const lines = block.querySelector('.text-lines').value; 
-                
-                if (type.includes("مسموع")) {
-                    isAudio = true;
-                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}". 🔴 (إلزامي: بحد أقصى 150 كلمة ليناسب برامج الصوت المجانية).\n`;
-                } else {
-                    let lengthRule = lines ? `طوله حوالي ${lines * 12} كلمة (ما يعادل ${lines} أسطر)` : "طول مناسب";
-                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}". (${lengthRule}).\n`;
-                }
-            });
-        }
+        const isAudio = !!document.querySelector('[data-type="فهم مسموع"]');
+        const isMath = sub === "الرياضيات" || sub === "العلوم";
 
-        let listeningConstraint = isAudio ? "" : "🔴 يُمنع منعاً باتاً إدراج أي نصوص سماعية (فهم مسموع) أو أسئلة تعتمد على الاستماع في هذا الامتحان، لأن المعلم لم يطلب ذلك ضمن الأقسام.";
+        let sectionsStr = "";
+        document.querySelectorAll('.section-block').forEach((b, i) => {
+            sectionsStr += `- القسم ${i+1}: [${b.querySelector('.sec-topic').value}] (${b.querySelector('.sec-qs').value} أسئلة) (${b.querySelector('.sec-score').value} علامة).\n`;
+        });
 
-        let languageStrictRules = "";
-        if (subject === "اللغة العبرية") {
-            languageStrictRules = "🔴 لغة الامتحان: يجب كتابة كل النصوص والأسئلة بالعبرية حصراً. يُمنع استخدام العربية تماماً.";
-        } else if (subject === "اللغة الإنجليزية") {
-            languageStrictRules = "🔴 لغة الامتحان: يجب كتابة كل النصوص والأسئلة بالإنجليزية حصراً. يُمنع استخدام العربية تماماً.";
-        }
+        let textsStr = "";
+        document.querySelectorAll('.text-block').forEach(b => {
+            textsStr += `- نص ${b.querySelector('.text-topic').getAttribute('data-type')} عن: ${b.querySelector('.text-topic').value} (حوالي ${b.querySelector('.text-lines').value} أسطر).\n`;
+        });
 
-        let mathSciencePrompt = isMathScience ? `\n- 🔴 تنبيه للرياضيات والعلوم (إلزامي للرسومات): إذا كان هناك سؤال يتطلب رسماً بيانياً أو شكلاً هندسياً، قم بإنشاء إطار (مستطيل/جدول فارغ) في ملف الامتحان واكتب بداخله التعليمات التالية للمعلم نصاً:\n[أدرج الرسم هنا. أيها المعلم: للحصول على الرسم، ادخل إلى الرابط (https://www.desmos.com/calculator للدوال أو https://www.geogebra.org للهندسة) واكتب: (ضع هنا المعادلة الدقيقة أو الوصف ليقوم المعلم بنسخه)، ثم انسخ الصورة وضعها هنا].` : "";
+        const prompt = `🔴 أمر إنشاء امتحان:
+المادة: ${sub} | الصف: ${grade}
+${sectionsStr}
+${textsStr}
+🔴 التنسيق: السطر الأول في ملف الوورد يجب أن يحتوي على: ![ترويسة](${examBannerLogoUrl})
+${getFormattingRules(sub)}
 
-        let sectionsPrompt = "";
-        const sectionBlocks = document.querySelectorAll('.section-block');
-        if (sectionBlocks.length > 0) {
-            sectionsPrompt = `\n🔴 هيكل الامتحان: يتكون من ${sectionBlocks.length} أقسام:\n`;
-            sectionBlocks.forEach((block, index) => {
-                const topic = block.querySelector('.sec-topic').value || `القسم ${index + 1}`;
-                const qs = block.querySelector('.sec-qs').value || "عدة";
-                const score = block.querySelector('.sec-score').value || "0";
-                sectionsPrompt += `- القسم ${index + 1}: [${topic}] - (${qs} أسئلة) - (${score} نقطة).\n`;
-            });
-        }
+🔴 المطلوب فوراً: ملف الطالب (بدون إجابات) وملف المعلم (بالإجابات) بصيغة Word. 
+يُمنع التكرار ويُمنع طرح الأسئلة، نفذ فوراً.`;
 
-        let finalDownloadStep = `🔴 خطوة التنفيذ الفوري (إجبارية ولا تقبل النقاش): قم بتجهيز الامتحان للتحميل كملف Word فوراً دون أن تسألني. أدرج بداخله الإجابات النموذجية (مرشد تصليح).`;
-        if (isAudio) {
-            finalDownloadStep = `🔴 خطوة التنفيذ الفوري (إجبارية ولا تقبل النقاش): نظراً لوجود نص استماع، قم فوراً بتجهيز ملفين للتحميل المباشر دون أن تسألني: 1. ملف الطالب (الامتحان دون النص السماعي ودون الإجابات). 2. ملف المعلم (يحتوي على النص السماعي ومرشد التصليح بالكامل).`;
-        }
-
-        const prompt = `🔴 أمر تنفيذي مباشر لإنشاء امتحان:
-المادة: ${subject}
-الصف: ${grade}
-${sectionsPrompt}
-${textsPromptInfo}
-
-🔴 قيود إجبارية للمحتوى:
-${languageStrictRules}
-${listeningConstraint}
-1. التنوع وعدم التكرار: يُمنع منعاً باتاً صياغة أسئلة مختلفة تسأل عن نفس المعلومة أو الفكرة. كل سؤال يجب أن يقيس مهارة أو معلومة مستقلة وجديدة.
-2. المنهاج: توافق كامل مع المدارس العربية في إسرائيل.
-${mathSciencePrompt}
-
-🔴 التنسيق الإلزامي للملف (تطبيق حرفي صارم):
-1. السطر الأول في ردك وفي ملف الوورد يجب أن يحتوي على كود الصورة التالي للترويسة. لا تقم بتغيير الرابط أو حذفه:
-![ترويسة المدرسة](${examBannerLogoUrl})
-*(ملاحظة: إذا كنت تقوم ببرمجة ملف Word ولم يدعم الكود جلب الصورة، اترك مربعاً فارغاً في أعلى الصفحة واكتب فيه "مكان ترويسة المدرسة"، ولكن يجب أن تعرض الصورة بنجاح في المحادثة هنا).*
-2. أضف مرشد تصليح (מחוון) في النهاية.
-- الملاحظات الإضافية: ${skills}
-
-${finalDownloadStep}
-
-⛔ تنبيه نهائي للذكاء الاصطناعي (System Directive): يُمنع منعاً باتاً طرح أي أسئلة عليّ أو تقديم اقتراحات أو خيارات إضافية (مثل "هل ترغب في كذا..." أو "إذا أردت يمكنني..."). وظيفتك هي تنفيذ الأوامر المذكورة أعلاه بحذافيرها، كتابة الامتحان، وتجهيز الروابط أو الملفات المطلوبة فوراً وبشكل نهائي.`;
-
-        displayPrompt(prompt, isAudio, isMathScience);
+        displayPrompt(prompt, isAudio, isMath);
     }
 
     function generateReviewPrompt() {
-        const reviewSubject = document.getElementById('reviewSubject').value;
-        const isMathScience = ["الرياضيات", "العلوم"].includes(reviewSubject);
-        
-        let mathSciencePrompt = isMathScience ? `\n- 🔴 في أسئلة الرياضيات/العلوم: إذا احتاج السؤال لرسم، ضع مكانه إطاراً واكتب بداخله: "أدرج الرسم هنا. ادخل لـ (Desmos للدوال أو GeoGebra للهندسة) واكتب [المعادلة المعنية هنا] وانسخ الصورة وضعها مكان هذا الإطار".` : "";
-
-        const prompt = `🔴 قم بمراجعة الامتحان المرفق وتحسينه بناءً على القواعد التالية:
-1. توسيع الامتحان ليكون شاملاً.
-2. 🔴 عدم التكرار: قم بإزالة أو دمج أي أسئلة تسأل عن نفس المعلومة بصيغ مختلفة. كل سؤال يجب أن يكون فريداً.
-3. حافظ على لغة الامتحان الأصلية.
-4. اضبط أي نص سماعي (إن وجد) ليكون أقل من 150 كلمة.
-${mathSciencePrompt}
-5. تأكد من توافقه مع المنهاج التعليمي للمدارس العربية في إسرائيل.
-
-🔴 التنسيق الإلزامي:
-1. السطر الأول في الامتحان المعدل يجب أن يبدأ بهذا الكود بالضبط لتظهر الترويسة:
-![ترويسة المدرسة](${examBannerLogoUrl})
-2. أضف مرشد تصليح مفصل.
-
-🔴 خطوة التنفيذ الفوري (إجبارية ولا تقبل النقاش): قم بتجهيز الامتحان المعدل للتحميل كملف Word فوراً دون أن تسألني. (اصنع ملفين إذا كان يحتوي على نص سماعي: واحد للطالب وواحد للمعلم).
-
-⛔ تنبيه نهائي للذكاء الاصطناعي (System Directive): يُمنع منعاً باتاً طرح أي أسئلة عليّ أو تقديم اقتراحات أو خيارات إضافية (مثل "هل ترغب في كذا..." أو "إذا أردت يمكنني..."). وظيفتك هي تنفيذ المطلوب بحذافيره وتقديم الملفات الجاهزة فوراً.`;
-        
-        displayPrompt(prompt, false, isMathScience);
+        const sub = document.getElementById('reviewSubject').value;
+        const prompt = `🔴 مراجعة الامتحان المرفق:
+1. حسّن الأسئلة ووسّعها للمادة: ${sub}.
+2. التزم بالترويسة: ![ترويسة](${examBannerLogoUrl})
+${getFormattingRules(sub)}
+🔴 المطلوب: ملفين Word (طالب ومعلم) فوراً.`;
+        displayPrompt(prompt, false, sub === "الرياضيات" || sub === "العلوم");
     }
 
     function displayPrompt(text, isAudio, isMath) {
@@ -461,15 +366,34 @@ ${mathSciencePrompt}
         document.getElementById('audioToolSection').classList.toggle('hidden', !isAudio);
         document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMath);
         document.getElementById('outputSection').classList.remove('hidden');
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
+    // دالة النسخ المضمونة والمحدثة
     function copyPrompt() {
-        navigator.clipboard.writeText(document.getElementById('promptOutput').innerText).then(() => {
-            alert("تم نسخ الأمر الذكي!");
-        });
+        const textToCopy = document.getElementById('promptOutput').innerText;
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("تم نسخ الأمر الذكي! 📋");
+            }).catch(() => fallbackCopy(textToCopy));
+        } else {
+            fallbackCopy(textToCopy);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed"; area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        try {
+            document.execCommand('copy');
+            alert("تم نسخ الأمر الذكي! 📋");
+        } catch (e) {
+            alert("فشل النسخ، يرجى النسخ يدوياً.");
+        }
+        document.body.removeChild(area);
     }
 </script>
-
 </body>
 </html>
