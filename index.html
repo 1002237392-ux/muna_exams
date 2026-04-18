@@ -1,399 +1,976 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة الذكية للتقييم - مدرسة إعدادية</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #333;
-            --soft-green: #e8f6f3;
-            --claude-color: #d97757;
-            --audio-note-color: #fff3cd;
-            --math-note-color: #e3f2fd;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المنصة الذكية للتقييم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a365d;
+  --primary-light: #2a4a7f;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --gold: #d4a017;
+  --gold-light: #f0c040;
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface-2: #f0ede6;
+  --surface-3: #e8e4db;
+  --text: #1a1a1a;
+  --text-2: #4a4a4a;
+  --text-3: #7a7a7a;
+  --border: rgba(26,54,93,0.12);
+  --border-strong: rgba(26,54,93,0.25);
+  --shadow-sm: 0 2px 8px rgba(26,54,93,0.08);
+  --shadow-md: 0 4px 20px rgba(26,54,93,0.12);
+  --shadow-lg: 0 8px 40px rgba(26,54,93,0.16);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --font: 'Cairo', sans-serif;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+}
 
-        header {
-            text-align: center;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
+/* ─── HERO HEADER ─── */
+.hero {
+  background: var(--primary);
+  background-image: 
+    radial-gradient(ellipse at 20% 50%, rgba(212,160,23,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(192,57,43,0.12) 0%, transparent 50%);
+  padding: 48px 32px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
 
-        .logo { 
-            max-width: 150px; 
-            height: auto;
-            margin-bottom: 15px; 
-        }
-        
-        h1 { color: var(--primary-color); margin: 10px 0; font-size: 24px; }
-        .coordinator-info { color: var(--accent-color); font-weight: bold; font-size: 18px; margin-bottom: 10px; }
-        .welcome-msg { font-style: italic; color: #666; margin-bottom: 20px; }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.015) 40px,
+    rgba(255,255,255,0.015) 80px
+  );
+}
 
-        .card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            margin-bottom: 20px;
-        }
+.hero-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--gold);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 8px rgba(212,160,23,0.2);
+}
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; }
-        input[type="text"], input[type="number"], select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
 
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+.hero-subtitle {
+  font-size: 15px;
+  color: var(--gold-light);
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 12px;
+}
 
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            font-weight: normal;
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
+.hero-quote {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+  font-style: italic;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  line-height: 1.8;
+}
 
-        .checkbox-item input[type="checkbox"] {
-            margin-left: 10px;
-            width: 20px;
-            height: 20px;
-        }
+.hero-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 16px auto;
+  position: relative;
+  z-index: 1;
+}
 
-        .section-block {
-            background: #f8f9fa;
-            border: 1px solid #ced4da;
-            border-right: 4px solid var(--accent-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .section-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .section-col { flex: 1; min-width: 150px; }
+/* ─── MAIN CONTENT ─── */
+.main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
 
-        .summary-bar {
-            background: #e8f6f3; border: 2px solid #27ae60; color: #27ae60;
-            padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold;
-            text-align: center; margin-bottom: 20px; transition: 0.3s;
-        }
+/* ─── CARDS ─── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.2s ease;
+}
 
-        .summary-bar.error { background: #fdeaea; border-color: #e74c3c; color: #e74c3c; }
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        .add-btn { width: auto; padding: 8px 15px; font-size: 14px; border-radius: 6px; margin-bottom: 10px; margin-left: 10px; cursor: pointer; border: none; font-weight: bold;}
-        .btn-section { background-color: #1976d2; color: white; }
-        .btn-section:hover { background-color: #1565c0; }
-        .btn-reading { background-color: #27ae60; color: white; }
-        .btn-reading:hover { background-color: #219653; }
-        .btn-listening { background-color: #8e44ad; color: white; }
-        .btn-listening:hover { background-color: #732d91; }
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 22px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
 
-        .text-block { background: #fff; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-top: 10px; position: relative; }
-        .delete-btn { position: absolute; top: 10px; left: 10px; background: #e74c3c; width: 25px; height: 25px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color:white; border:none; cursor:pointer;}
+/* ─── STEP INDICATOR ─── */
+.steps-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
 
-        .language-options { background-color: #fce4ec; border: 1px solid #f8bbd0; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+.step-item {
+  flex: 1;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+  background: var(--surface-2);
+  transition: all 0.25s ease;
+  cursor: default;
+}
 
-        .tool-note { padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; }
-        .audio-note { background-color: var(--audio-note-color); border: 1px solid #ffeeba; color: #856404; }
-        .math-note { background-color: var(--math-note-color); border: 1px solid #b3e5fc; color: #0277bd; }
+.step-item.active {
+  background: var(--primary);
+  color: #fff;
+}
 
-        .main-btn { background-color: var(--accent-color); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; }
-        .main-btn:hover { background-color: #2980b9; }
+.step-item.done {
+  background: var(--primary-light);
+  color: rgba(255,255,255,0.8);
+}
 
-        .hidden { display: none !important; }
+/* ─── FORM ELEMENTS ─── */
+label.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
 
-        #promptOutput { background: var(--soft-green); padding: 20px; border-right: 5px solid var(--accent-color); margin-top: 20px; white-space: pre-wrap; font-size: 15px; line-height: 1.8; text-align: right; }
+.field-note {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-3);
+  display: block;
+  margin-top: 3px;
+}
 
-        .ai-links { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .ai-btn { flex: 1; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; color: white; font-size: 15px; font-weight: bold; transition: 0.3s; }
-        .claude { background-color: var(--claude-color); }
-        .chatgpt { background-color: #10a37f; }
-    </style>
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,54,93,0.1);
+}
+
+textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+.field-group { margin-bottom: 18px; }
+
+.row-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; }
+.row-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ─── CHECKBOXES ─── */
+.check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 14px;
+  user-select: none;
+}
+
+.check-item:has(input:checked) {
+  background: rgba(26,54,93,0.08);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover { background: rgba(26,54,93,0.06); }
+
+.btn-choice {
+  flex: 1;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  font-size: 15px;
+}
+
+.btn-choice:hover {
+  background: rgba(26,54,93,0.08);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-add { padding: 8px 14px; font-size: 13px; border-radius: 6px; }
+.btn-add-section { background: #1565c0; color: #fff; }
+.btn-add-section:hover { background: #0d47a1; }
+.btn-add-reading { background: #2e7d32; color: #fff; }
+.btn-add-reading:hover { background: #1b5e20; }
+.btn-add-listening { background: #6a1b9a; color: #fff; }
+.btn-add-listening:hover { background: #4a148c; }
+
+.btn-copy {
+  background: #2e7d32;
+  color: #fff;
+  width: 100%;
+  padding: 13px;
+  font-size: 15px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.btn-copy:hover { background: #1b5e20; }
+
+.btn-delete {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 26px;
+  height: 26px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.btn-delete:hover { background: #c0392b; }
+
+/* ─── CHOICE BUTTONS ROW ─── */
+.choice-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* ─── SECTION BLOCKS ─── */
+.section-block {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border-strong);
+  border-right: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 14px 14px 14px 44px;
+  margin-bottom: 10px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ─── TEXT BLOCKS ─── */
+.text-block {
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px 14px 14px 44px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.text-block-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.text-block-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+}
+
+/* ─── SUMMARY BAR ─── */
+.summary-bar {
+  background: #e8f5e9;
+  border: 1.5px solid #43a047;
+  color: #1b5e20;
+  padding: 13px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 12px;
+  transition: all 0.25s;
+}
+
+.summary-bar.error {
+  background: #ffebee;
+  border-color: #e53935;
+  color: #b71c1c;
+}
+
+/* ─── LANGUAGE BOX ─── */
+.lang-box {
+  background: #fce4ec;
+  border: 1.5px solid #f48fb1;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.lang-box .field-label { color: #880e4f; margin-bottom: 10px; }
+
+/* ─── TOOL NOTES ─── */
+.tool-note {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+.note-audio { background: #fff8e1; border: 1.5px solid #ffe082; color: #5d4037; }
+.note-math { background: #e3f2fd; border: 1.5px solid #90caf9; color: #0d47a1; }
+
+/* ─── OUTPUT ─── */
+.output-box {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border-strong);
+  border-right: 5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-word;
+  direction: rtl;
+  text-align: right;
+  color: var(--text);
+  margin-top: 4px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+/* ─── AI BUTTONS ─── */
+.ai-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ai-btn {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+.ai-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.ai-claude { background: #d97757; }
+.ai-gpt { background: #10a37f; }
+
+/* ─── NAME INPUT HERO SECTION ─── */
+.name-card {
+  text-align: center;
+  padding: 36px 28px;
+}
+
+.name-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.name-card p {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 24px;
+}
+
+.name-input-wrap {
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+/* ─── DIVIDER ─── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* ─── SECTION ADDER ─── */
+.add-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+/* ─── HIDDEN ─── */
+.hidden { display: none !important; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card { animation: slideIn 0.3s ease; }
+
+/* ─── SCROLLBAR ─── */
+.output-box::-webkit-scrollbar { width: 5px; }
+.output-box::-webkit-scrollbar-track { background: transparent; }
+.output-box::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+/* ─── TABLET ─── */
+@media (max-width: 600px) {
+  .row-2, .row-equal { grid-template-columns: 1fr; }
+  .check-grid { grid-template-columns: 1fr; }
+  .section-block { grid-template-columns: 1fr; padding-left: 44px; }
+  .choice-row { flex-direction: column; }
+  .ai-row { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 22px; }
+  .main { padding: 20px 14px 48px; }
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <img src="https://i.postimg.cc/G3ghK9PH/sml-byt-hspr.png" alt="شعار المدرسة" class="logo">
-        <h1>المنصة الذكية لدعم التقييم والقياس</h1>
-        <div class="coordinator-info">بإرشاد مركزة التقييم: منى مصطفى</div>
-        <p class="welcome-msg">"زميلي المعلم، زميلتي المعلمة.. يسعدني جداً أن أكون بجانبكم لنرتقي معاً بجودة تقييم طلابنا."</p>
-    </header>
-
-    <div id="step1" class="card">
-        <label>أهلاً بك! قبل أن نبدأ، ما هو اسمك الكريم؟</label>
-        <input type="text" id="teacherName" placeholder="اكتب اسمك هنا...">
-        <button class="main-btn" onclick="startApp()" style="margin-top: 15px;">ابدأ الآن</button>
-    </div>
-
-    <div id="step2" class="card hidden">
-        <h3 id="personalizedWelcome"></h3>
-        <p>ماذا تود أن نفعل اليوم؟</p>
-        <div style="display: flex; gap: 10px;">
-            <button class="main-btn" onclick="showTool('create')">بناء امتحان جديد</button>
-            <button class="main-btn" onclick="showTool('review')">تحسين امتحان جاهز</button>
-        </div>
-    </div>
-
-    <div id="toolCreate" class="card hidden">
-        <h3>بناء امتحان جديد منسق</h3>
-        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-            <div style="flex: 2;">
-                <label>المادة:</label>
-                <select id="subject" onchange="toggleSubjectOptions()">
-                    <option value="اللغة العربية">اللغة العربية</option>
-                    <option value="اللغة العبرية">اللغة العبرية</option>
-                    <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
-                    <option value="الرياضيات">الرياضيات</option>
-                    <option value="العلوم">العلوم</option>
-                    <option value="الجغرافيا">الجغرافيا</option>
-                </select>
-            </div>
-            <div style="flex: 1;">
-                <label>الصف:</label>
-                <input type="text" id="grade" placeholder="مثلاً: الثامن">
-            </div>
-        </div>
-
-        <div class="input-group" style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
-            <label>أقسام الامتحان وتوزيع العلامات:</label>
-            <button type="button" class="add-btn btn-section" onclick="addSectionBlock()">➕ إضافة قسم</button>
-            <div id="sectionsContainer"></div>
-            <div id="summaryBar" class="summary-bar hidden">
-                الأسئلة: <span id="totalQs">0</span> | العلامات: <span id="totalScore">0</span>
-            </div>
-        </div>
-        
-        <div id="languageOptions" class="language-options">
-            <label>خيارات لغوية:</label>
-            <div class="checkbox-grid">
-                <label class="checkbox-item"><input type="checkbox" id="chkGrammar"> أسئلة قواعد</label>
-                <label class="checkbox-item"><input type="checkbox" id="chkWriting"> تعبير كتابي</label>
-            </div>
-        </div>
-
-        <div class="input-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
-            <label>نصوص الفهم (اختياري):</label>
-            <button type="button" class="add-btn btn-reading" onclick="addTextBlock('فهم مقروء')">➕ نص مقروء</button>
-            <button type="button" class="add-btn btn-listening" onclick="addTextBlock('فهم مسموع')">➕ نص مسموع</button>
-            <div id="dynamicTextsContainer"></div>
-        </div>
-
-        <textarea id="skills" placeholder="ملاحظات إضافية..." rows="3"></textarea>
-        <button class="main-btn" onclick="generateCreatePrompt()">توليد الأمر الذكي</button>
-    </div>
-
-    <div id="toolReview" class="card hidden">
-        <h3>تقييم وتحسين امتحان جاهز</h3>
-        <label>اختر مادة الامتحان المرفق:</label>
-        <select id="reviewSubject">
-            <option value="عام">عام</option>
-            <option value="الرياضيات">الرياضيات</option>
-            <option value="العلوم">العلوم</option>
-            <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
-        </select>
-        <button class="main-btn" onclick="generateReviewPrompt()" style="margin-top: 15px;">توليد أمر التحسين</button>
-    </div>
-
-    <div id="outputSection" class="card hidden">
-        <h3 style="color: var(--accent-color);">الأمر الذكي جاهز!</h3>
-        <button class="main-btn" onclick="copyPrompt()" style="background-color: #27ae60; margin-bottom: 15px;">📋 انسخ النص (البرومبت)</button>
-        <div id="promptOutput"></div>
-        
-        <div id="audioToolSection" class="tool-note audio-note hidden"><strong>🎧 للمسموع:</strong> استخدم <a href="https://ttsmaker.com/" target="_blank">TTSMaker</a>.</div>
-        <div id="mathScienceToolSection" class="tool-note math-note hidden"><strong>📐 للرسوم:</strong> استخدم <a href="https://www.desmos.com/calculator" target="_blank">Desmos</a>.</div>
-        
-        <div class="ai-links">
-            <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Claude</a>
-            <a href="https://chatgpt.com/" target="_blank" class="ai-btn chatgpt">ChatGPT</a>
-        </div>
-    </div>
+<!-- HERO -->
+<div class="hero">
+  <img src="https://i.postimg.cc/G3ghK9PH/sml-byt-hspr.png" alt="شعار المدرسة" class="hero-logo" onerror="this.style.display='none'">
+  <h1>المنصة الذكية لدعم التقييم والقياس</h1>
+  <div class="hero-divider"></div>
+  <div class="hero-subtitle">بإرشاد مركزة التقييم: منى مصطفى</div>
+  <div class="hero-quote">"زميلي المعلم، زميلتي المعلمة.. يسعدني جداً أن أكون بجانبكم لنرتقي معاً بجودة تقييم طلابنا وندعم مسيرتهم التعليمية بكل مهنية وحب."</div>
 </div>
 
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STEP 1: Name -->
+  <div id="step1" class="card">
+    <div class="name-card">
+      <h2>أهلاً بكم في المنصة</h2>
+      <p>ابدأ بإدخال اسمك لنخصّص تجربتك</p>
+      <div class="name-input-wrap">
+        <input type="text" id="teacherName" placeholder="أدخل اسمك الكريم..." style="font-size: 16px; padding: 13px 16px; text-align: center;">
+      </div>
+      <button class="btn btn-primary" style="max-width: 300px; margin: 0 auto;" onclick="startApp()">ابدأ الآن ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Choose action -->
+  <div id="step2" class="card hidden">
+    <div class="card-title" id="welcomeTitle"></div>
+    <p style="font-size: 14px; color: var(--text-2); margin-bottom: 18px;">ماذا تودّ أن نفعل اليوم؟</p>
+    <div class="choice-row">
+      <button class="btn btn-choice" onclick="showTool('create')">
+        <span style="font-size: 22px; display: block; margin-bottom: 4px;">📝</span>
+        بناء امتحان جديد
+      </button>
+      <button class="btn btn-choice" onclick="showTool('review')">
+        <span style="font-size: 22px; display: block; margin-bottom: 4px;">🔍</span>
+        تحسين امتحان جاهز
+      </button>
+    </div>
+  </div>
+
+  <!-- TOOL: CREATE -->
+  <div id="toolCreate" class="card hidden">
+    <div class="card-title">بناء امتحان جديد منسق ودقيق</div>
+
+    <div class="row-2 field-group">
+      <div>
+        <label class="field-label">المادة الدراسية</label>
+        <select id="subject" onchange="toggleSubjectOptions()">
+          <option value="اللغة العربية">اللغة العربية</option>
+          <option value="اللغة العبرية">اللغة العبرية</option>
+          <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+          <option value="الرياضيات">الرياضيات</option>
+          <option value="الفيزياء">الفيزياء</option>
+          <option value="الكيمياء">الكيمياء</option>
+          <option value="البيولوجيا">البيولوجيا</option>
+          <option value="الجغرافيا">الجغرافيا</option>
+          <option value="التاريخ">التاريخ</option>
+          <option value="المدنيات">المدنيات</option>
+          <option value="الدين">الدين</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">الصف</label>
+        <input type="text" id="grade" placeholder="مثلاً: السابع">
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
+    <div class="field-group" style="background: #e3f2fd; border: 1.5px solid #90caf9; padding: 16px; border-radius: var(--radius-sm);">
+      <label class="field-label" style="color: #1565c0;">هيكل الامتحان وتوزيع العلامات</label>
+      <p class="field-note" style="margin-bottom: 12px; font-size: 13px; color: #37474f;">أضف أقسام الامتحان مع موضوعها وعدد الأسئلة والعلامات</p>
+
+      <div class="add-row">
+        <button type="button" class="btn btn-add btn-add-section" onclick="addSectionBlock()">+ إضافة قسم</button>
+      </div>
+
+      <div id="sectionsContainer"></div>
+
+      <div id="summaryBar" class="summary-bar hidden">
+        إجمالي الأسئلة: <span id="totalQs">0</span> | إجمالي العلامات: <span id="totalScore">0</span>
+      </div>
+    </div>
+
+    <!-- QUESTION TYPES -->
+    <div class="field-group">
+      <label class="field-label">أنواع الأسئلة المفضّلة</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox" class="q-type" value="أسئلة اختيار من متعدد"> اختيار من متعدد</label>
+        <label class="check-item"><input type="checkbox" class="q-type" value="أسئلة صح وخطأ"> صح وخطأ</label>
+        <label class="check-item"><input type="checkbox" class="q-type" value="أسئلة مفتوحة قصيرة"> أسئلة مفتوحة قصيرة</label>
+        <label class="check-item"><input type="checkbox" class="q-type" value="أسئلة مقالية / تفكير عليا"> أسئلة مقالية</label>
+      </div>
+    </div>
+
+    <!-- LANGUAGE OPTIONS -->
+    <div id="languageOptions" class="lang-box hidden">
+      <label class="field-label">توجيهات لغوية صارمة</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox" id="chkGrammar" value="نعم"> السماح بأسئلة القواعد اللغوية</label>
+        <label class="check-item"><input type="checkbox" id="chkWriting" value="نعم"> السماح بمهمة كتابة تعبيرية</label>
+      </div>
+    </div>
+
+    <!-- TEXTS -->
+    <div class="field-group" style="background: var(--surface-2); border: 1.5px solid var(--border-strong); padding: 16px; border-radius: var(--radius-sm);">
+      <label class="field-label">إدراج نصوص / قطع (اختياري)</label>
+      <div class="add-row">
+        <button type="button" class="btn btn-add btn-add-reading" onclick="addTextBlock('فهم مقروء')">+ نص مقروء</button>
+        <button type="button" class="btn btn-add btn-add-listening" onclick="addTextBlock('فهم مسموع')">+ نص مسموع</button>
+      </div>
+      <div id="dynamicTextsContainer"></div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="field-group">
+      <label class="field-label">ملاحظات إضافية
+        <span class="field-note">مثال: ركز على أسئلة التفكير الناقد...</span>
+      </label>
+      <textarea id="skills" placeholder="اكتب ملاحظاتك هنا..." rows="3"></textarea>
+    </div>
+
+    <button class="btn btn-primary" onclick="generateCreatePrompt()">توليد الأمر الذكي ←</button>
+  </div>
+
+  <!-- TOOL: REVIEW -->
+  <div id="toolReview" class="card hidden">
+    <div class="card-title">تقييم وتحسين امتحان جاهز</div>
+    <p style="font-size: 14px; color: var(--text-2); margin-bottom: 18px;">سيُجبر هذا الأمر الذكاء الاصطناعي على تحسين الامتحان المرفق وتوسيعه وفق المعايير المطلوبة.</p>
+    <div class="field-group">
+      <label class="field-label">مادة الامتحان المرفق</label>
+      <select id="reviewSubject">
+        <option value="عام">عام / أخرى</option>
+        <option value="اللغة العربية">اللغة العربية</option>
+        <option value="اللغة العبرية">اللغة العبرية</option>
+        <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+        <option value="الرياضيات">الرياضيات</option>
+        <option value="الفيزياء">الفيزياء</option>
+        <option value="الكيمياء">الكيمياء</option>
+        <option value="البيولوجيا">البيولوجيا</option>
+        <option value="الجغرافيا">الجغرافيا</option>
+        <option value="التاريخ">التاريخ</option>
+        <option value="المدنيات">المدنيات</option>
+        <option value="الدين">الدين</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="generateReviewPrompt()">توليد الأمر الذكي ←</button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="outputSection" class="card hidden">
+    <div class="card-title">الأمر الذكي جاهز!</div>
+    <button class="btn btn-copy" onclick="copyPrompt()">📋 انسخ الأمر الذكي</button>
+    <div class="output-box" id="promptOutput"></div>
+
+    <div id="audioToolSection" class="tool-note note-audio hidden">
+      <strong>🎧 لتحويل النص السماعي إلى MP3:</strong> استخدم موقع <a href="https://ttsmaker.com/" target="_blank" style="color: #5d4037;">TTSMaker</a>
+    </div>
+    <div id="mathScienceToolSection" class="tool-note note-math hidden">
+      <strong>📐 للرسوم الهندسية والدوال:</strong> استخدم <a href="https://www.desmos.com/calculator" target="_blank" style="color: #0d47a1;">Desmos</a> أو <a href="https://www.geogebra.org/" target="_blank" style="color: #0d47a1;">GeoGebra</a>
+    </div>
+
+    <div class="ai-row">
+      <a href="https://claude.ai/" target="_blank" class="ai-btn ai-claude">Claude</a>
+      <a href="https://chatgpt.com/" target="_blank" class="ai-btn ai-gpt">ChatGPT</a>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
 <script>
-    let teacherName = "";
-    const examBannerLogoUrl = "https://i.postimg.cc/Sx1tnFck/lwgw-byt-hspr.jpg";
+let teacherName = "";
+const examBannerLogoUrl = "https://i.postimg.cc/Sx1tnFck/lwgw-byt-hspr.jpg";
 
-    function startApp() {
-        teacherName = document.getElementById('teacherName').value;
-        if (!teacherName) { alert("من فضلك أدخل اسمك"); return; }
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step2').classList.remove('hidden');
-        document.getElementById('personalizedWelcome').innerText = `أهلاً بك يا أستاذ/ة ${teacherName}`;
-    }
+function startApp() {
+  teacherName = document.getElementById('teacherName').value.trim();
+  if (!teacherName) { alert("أدخل اسمك لنبدأ"); return; }
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+  document.getElementById('welcomeTitle').innerHTML = `أهلاً بك يا أستاذ/ة ${teacherName}`;
+}
 
-    function showTool(type) {
-        document.getElementById('toolCreate').classList.toggle('hidden', type !== 'create');
-        document.getElementById('toolReview').classList.toggle('hidden', type !== 'review');
-        document.getElementById('outputSection').classList.add('hidden');
-    }
+function showTool(type) {
+  ['toolCreate','toolReview','outputSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById(type === 'create' ? 'toolCreate' : 'toolReview').classList.remove('hidden');
+  window.scrollTo({ top: document.getElementById(type === 'create' ? 'toolCreate' : 'toolReview').offsetTop - 20, behavior: 'smooth' });
+}
 
-    function toggleSubjectOptions() {
-        const sub = document.getElementById('subject').value;
-        document.getElementById('languageOptions').classList.toggle('hidden', !sub.includes("اللغة"));
-    }
+function toggleSubjectOptions() {
+  const subject = document.getElementById('subject').value;
+  const isLang = ["اللغة العربية","اللغة العبرية","اللغة الإنجليزية"].includes(subject);
+  document.getElementById('languageOptions').classList.toggle('hidden', !isLang);
+}
 
-    function addSectionBlock() {
-        const container = document.getElementById('sectionsContainer');
-        document.getElementById('summaryBar').classList.remove('hidden');
-        const block = document.createElement('div');
-        block.className = 'section-block';
-        block.innerHTML = `
-            <button type="button" class="delete-btn" onclick="this.parentElement.remove(); calculateTotals();">❌</button>
-            <div class="section-row">
-                <div class="section-col"><input type="text" class="sec-topic" placeholder="الموضوع"></div>
-                <div class="section-col"><input type="number" class="sec-qs" placeholder="الأسئلة" oninput="calculateTotals()"></div>
-                <div class="section-col"><input type="number" class="sec-score" placeholder="العلامة" oninput="calculateTotals()"></div>
-            </div>`;
-        container.appendChild(block);
-    }
+function addSectionBlock() {
+  const container = document.getElementById('sectionsContainer');
+  document.getElementById('summaryBar').classList.remove('hidden');
+  const block = document.createElement('div');
+  block.className = 'section-block';
+  block.innerHTML = `
+    <button type="button" class="btn-delete" onclick="this.parentElement.remove(); calcTotals()">×</button>
+    <input type="text" class="sec-topic" placeholder="موضوع القسم">
+    <input type="number" class="sec-qs" placeholder="عدد الأسئلة" min="1" oninput="calcTotals()">
+    <input type="number" class="sec-score" placeholder="العلامة" min="0" oninput="calcTotals()">
+  `;
+  container.appendChild(block);
+  calcTotals();
+}
 
-    function calculateTotals() {
-        let qs = 0, score = 0;
-        document.querySelectorAll('.sec-qs').forEach(i => qs += parseInt(i.value) || 0);
-        document.querySelectorAll('.sec-score').forEach(i => score += parseInt(i.value) || 0);
-        document.getElementById('totalQs').innerText = qs;
-        document.getElementById('totalScore').innerText = score;
-        document.getElementById('summaryBar').classList.toggle('error', score > 100);
-    }
+function calcTotals() {
+  let qs = 0, score = 0;
+  document.querySelectorAll('.sec-qs').forEach(i => qs += parseInt(i.value) || 0);
+  document.querySelectorAll('.sec-score').forEach(i => score += parseInt(i.value) || 0);
+  document.getElementById('totalQs').innerText = qs;
+  document.getElementById('totalScore').innerText = score;
+  document.getElementById('summaryBar').classList.toggle('error', score > 100);
+}
 
-    function addTextBlock(type) {
-        const container = document.getElementById('dynamicTextsContainer');
-        const block = document.createElement('div');
-        block.className = 'text-block';
-        block.innerHTML = `
-            <button type="button" class="delete-btn" onclick="this.parentElement.remove()">❌</button>
-            <h4 style="margin:0 0 10px 0;">${type}</h4>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}">
-                <input type="number" class="text-lines" placeholder="الأسطر" style="width:80px">
-            </div>`;
-        container.appendChild(block);
-    }
+function addTextBlock(type) {
+  const container = document.getElementById('dynamicTextsContainer');
+  const block = document.createElement('div');
+  block.className = 'text-block';
+  block.innerHTML = `
+    <button type="button" class="btn-delete" onclick="this.parentElement.remove()">×</button>
+    <div class="text-block-header">${type}</div>
+    <div class="text-block-row">
+      <input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}">
+      <input type="number" class="text-lines" placeholder="عدد الأسطر" min="1">
+    </div>
+  `;
+  container.appendChild(block);
+}
 
-    // وظيفة بناء قواعد التنسيق ديناميكياً
-    function getFormattingRules(sub) {
-        if (sub === "اللغة الإنجليزية") {
-            return `🔴 إعدادات برمجية للوورد (English - LTR):
-1. اتجاه النص (LTR): من اليسار لليمين.
-2. المحاذاة: لليسار.
-3. الخط: Arial أو Times New Roman.
-4. تعطيل BIDI تماماً.`;
-        } else {
-            let mathRule = (sub === "الرياضيات" || sub === "العلوم") ? "\n4. 🔴 للمعادلات الإنجليزية: استخدم (Runs) مستقلة باتجاه LTR لضمان عدم انعكاس الرموز." : "";
-            return `🔴 إعدادات برمجية للوورد (Arabic/Hebrew - RTL):
-1. اتجاه النص (RTL): من اليمين لليسار.
-2. الخط: Arial أو Tahoma (للـ Ascii و Complex Script).
-3. تفعيل BIDI للكلمات العربية/العبرية.${mathRule}`;
-        }
-    }
+function generateCreatePrompt() {
+  const subject = document.getElementById('subject').value;
+  const grade = document.getElementById('grade').value;
+  const skills = document.getElementById('skills').value;
+  const isMathScience = ["الرياضيات","الفيزياء","الكيمياء","البيولوجيا"].includes(subject);
 
-    function generateCreatePrompt() {
-        const sub = document.getElementById('subject').value;
-        const grade = document.getElementById('grade').value;
-        const isAudio = !!document.querySelector('[data-type="فهم مسموع"]');
-        const isMath = sub === "الرياضيات" || sub === "العلوم";
+  let wordFormattingRules = "";
+  if (subject === "اللغة الإنجليزية") {
+    wordFormattingRules = `\n🔴 إعدادات برمجية إلزامية لملف الوورد:\n1. اتجاه النص (LTR): يجب تعيين اتجاه الوثيقة والفقرات من اليسار إلى اليمين.\n2. نوع الخط: استخدم "Arial" أو "Times New Roman".\n3. إيقاف خاصية BIDI تماماً.`;
+  } else {
+    const mathRule = isMathScience ? "\n4. 🔴 للمعادلات الرياضية: ضعها في (Runs) منفصلة بدون BIDI، واضبط اتجاهها LTR." : "";
+    wordFormattingRules = `\n🔴 إعدادات برمجية إلزامية لملف الوورد:\n1. اتجاه النص (RTL): يجب تعيين الوثيقة من اليمين إلى اليسار.\n2. نوع الخط: "Arial" أو "Tahoma" كخط أساسي.\n3. تفعيل خاصية (bidi) في الـ (Runs) للكلمات العربية/العبرية.${mathRule}`;
+  }
 
-        let sectionsStr = "";
-        document.querySelectorAll('.section-block').forEach((b, i) => {
-            sectionsStr += `- القسم ${i+1}: [${b.querySelector('.sec-topic').value}] (${b.querySelector('.sec-qs').value} أسئلة) (${b.querySelector('.sec-score').value} علامة).\n`;
-        });
+  let isAudio = false;
+  let textsInfo = "";
+  const textBlocks = document.querySelectorAll('#dynamicTextsContainer .text-block');
+  if (textBlocks.length > 0) {
+    textsInfo = "\n🔴 نصوص الفهم المطلوبة:\n";
+    textBlocks.forEach((block, i) => {
+      const type = block.querySelector('.text-topic').getAttribute('data-type');
+      const topic = block.querySelector('.text-topic').value || "موضوع عام";
+      const lines = block.querySelector('.text-lines').value;
+      if (type.includes("مسموع")) {
+        isAudio = true;
+        textsInfo += `${i+1}. نص [${type}] حول: "${topic}". (إلزامي: بحد أقصى 150 كلمة لبرامج الصوت المجانية).\n`;
+      } else {
+        const lenRule = lines ? `طوله حوالي ${lines * 12} كلمة (${lines} أسطر)` : "طول مناسب";
+        textsInfo += `${i+1}. نص [${type}] حول: "${topic}". (${lenRule}).\n`;
+      }
+    });
+  }
 
-        let textsStr = "";
-        document.querySelectorAll('.text-block').forEach(b => {
-            textsStr += `- نص ${b.querySelector('.text-topic').getAttribute('data-type')} عن: ${b.querySelector('.text-topic').value} (حوالي ${b.querySelector('.text-lines').value} أسطر).\n`;
-        });
+  const noAudioRule = isAudio ? "" : "🔴 يُمنع منعاً باتاً إدراج أي نصوص سماعية لأن المعلم لم يطلب ذلك.";
 
-        const prompt = `🔴 أمر إنشاء امتحان:
-المادة: ${sub} | الصف: ${grade}
-${sectionsStr}
-${textsStr}
-🔴 التنسيق: السطر الأول في ملف الوورد يجب أن يحتوي على: ![ترويسة](${examBannerLogoUrl})
-${getFormattingRules(sub)}
+  let langRule = "";
+  if (subject === "اللغة العبرية") langRule = "🔴 لغة الامتحان: العبرية حصراً. يُمنع استخدام العربية تماماً.";
+  else if (subject === "اللغة الإنجليزية") langRule = "🔴 لغة الامتحان: الإنجليزية حصراً. يُمنع استخدام العربية تماماً.";
 
-🔴 المطلوب فوراً: ملف الطالب (بدون إجابات) وملف المعلم (بالإجابات) بصيغة Word. 
-يُمنع التكرار ويُمنع طرح الأسئلة، نفذ فوراً.`;
+  const mathPart = isMathScience ? `\n- 🔴 الرسوم البيانية: إذا احتاج سؤال لرسم، ضع إطاراً فارغاً واكتب بداخله:\n[أدرج الرسم هنا. للحصول عليه ادخل desmos.com للدوال أو geogebra.org للهندسة].` : "";
 
-        displayPrompt(prompt, isAudio, isMath);
-    }
+  let sectPart = "";
+  const secBlocks = document.querySelectorAll('.section-block');
+  if (secBlocks.length > 0) {
+    sectPart = `\n🔴 هيكل الامتحان (${secBlocks.length} أقسام):\n`;
+    secBlocks.forEach((b, i) => {
+      const t = b.querySelector('.sec-topic').value || `القسم ${i+1}`;
+      const q = b.querySelector('.sec-qs').value || "عدة";
+      const s = b.querySelector('.sec-score').value || "0";
+      sectPart += `- القسم ${i+1}: [${t}] — ${q} أسئلة — ${s} نقطة.\n`;
+    });
+  }
 
-    function generateReviewPrompt() {
-        const sub = document.getElementById('reviewSubject').value;
-        const prompt = `🔴 مراجعة الامتحان المرفق:
-1. حسّن الأسئلة ووسّعها للمادة: ${sub}.
-2. التزم بالترويسة: ![ترويسة](${examBannerLogoUrl})
-${getFormattingRules(sub)}
-🔴 المطلوب: ملفين Word (طالب ومعلم) فوراً.`;
-        displayPrompt(prompt, false, sub === "الرياضيات" || sub === "العلوم");
-    }
+  const finalStep = isAudio
+    ? `🔴 خطوة التنفيذ الفوري (إجبارية): جهّز ملفين Word للتحميل فوراً:\n1. ملف الطالب (الامتحان دون النص السماعي ودون الإجابات).\n2. ملف المعلم (النص السماعي كاملاً + مرشد التصليح المفصل).`
+    : `🔴 خطوة التنفيذ الفوري (إجبارية): جهّز ملفين Word للتحميل فوراً:\n1. ملف الطالب (الامتحان دون الإجابات).\n2. ملف المعلم (مرشد التصليح المفصل وتوزيع العلامات).`;
 
-    function displayPrompt(text, isAudio, isMath) {
-        document.getElementById('promptOutput').innerText = text;
-        document.getElementById('audioToolSection').classList.toggle('hidden', !isAudio);
-        document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMath);
-        document.getElementById('outputSection').classList.remove('hidden');
-    }
+  const prompt = `🔴 أمر تنفيذي مباشر لإنشاء امتحان:
+المادة: ${subject}
+الصف: ${grade}
+${sectPart}
+${textsInfo}
 
-    // دالة النسخ المضمونة والمحدثة
-    function copyPrompt() {
-        const textToCopy = document.getElementById('promptOutput').innerText;
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert("تم نسخ الأمر الذكي! 📋");
-            }).catch(() => fallbackCopy(textToCopy));
-        } else {
-            fallbackCopy(textToCopy);
-        }
-    }
+🔴 قيود إجبارية للمحتوى:
+${langRule}
+${noAudioRule}
+1. التنوع: كل سؤال يقيس مهارة أو معلومة مستقلة ومختلفة. يُمنع التكرار.
+2. المنهاج: توافق كامل مع المدارس العربية في إسرائيل.
+${mathPart}
 
-    function fallbackCopy(text) {
-        const area = document.createElement("textarea");
-        area.value = text;
-        area.style.position = "fixed"; area.style.opacity = "0";
-        document.body.appendChild(area);
-        area.select();
-        try {
-            document.execCommand('copy');
-            alert("تم نسخ الأمر الذكي! 📋");
-        } catch (e) {
-            alert("فشل النسخ، يرجى النسخ يدوياً.");
-        }
-        document.body.removeChild(area);
-    }
+🔴 التنسيق الإلزامي:
+1. السطر الأول في الملفات يحتوي على كود الترويسة:
+![ترويسة المدرسة](${examBannerLogoUrl})
+- ملاحظات المعلم: ${skills}
+${wordFormattingRules}
+
+${finalStep}
+
+⛔ تنبيه للذكاء الاصطناعي: يُمنع طرح أي أسئلة أو تقديم خيارات إضافية. نفّذ الأوامر فوراً وبشكل نهائي.`;
+
+  displayPrompt(prompt, isAudio, isMathScience);
+}
+
+function generateReviewPrompt() {
+  const sub = document.getElementById('reviewSubject').value;
+  const isMath = ["الرياضيات","الفيزياء","الكيمياء","البيولوجيا"].includes(sub);
+
+  let wfr = "";
+  if (sub === "اللغة الإنجليزية") {
+    wfr = `\n🔴 إعدادات الوورد:\n1. اتجاه LTR.\n2. خط Arial أو Times New Roman.\n3. إيقاف BIDI.`;
+  } else {
+    const mr = isMath ? "\n4. المعادلات في Runs منفصلة باتجاه LTR." : "";
+    wfr = `\n🔴 إعدادات الوورد:\n1. اتجاه RTL.\n2. خط Arial أو Tahoma.\n3. تفعيل BIDI للعربية/العبرية.${mr}`;
+  }
+
+  const mathPart = isMath ? `\n- في أسئلة الرسوم: ضع إطاراً واكتب بداخله "ادخل Desmos أو GeoGebra واحضر الرسم هنا".` : "";
+
+  const prompt = `🔴 راجع الامتحان المرفق وحسّنه وفق القواعد التالية:
+1. وسّع الامتحان ليكون شاملاً وغنياً.
+2. 🔴 أزِل أو ادمج أي أسئلة تكرر نفس المعلومة. كل سؤال يجب أن يكون فريداً.
+3. حافظ على لغة الامتحان الأصلية.
+4. اضبط أي نص سماعي (إن وجد) ليكون أقل من 150 كلمة.
+${mathPart}
+5. تأكد من توافقه مع منهاج المدارس العربية في إسرائيل.
+
+🔴 التنسيق الإلزامي:
+1. السطر الأول يبدأ بهذا الكود:
+![ترويسة المدرسة](${examBannerLogoUrl})
+${wfr}
+
+🔴 خطوة التنفيذ الفوري (إجبارية): جهّز ملفين Word للتحميل فوراً:
+1. ملف الطالب (الامتحان المعدّل دون الإجابات).
+2. ملف المعلم (مرشد التصليح المفصل + النص السماعي إن وجد).
+
+⛔ تنبيه: يُمنع طرح أي أسئلة أو اقتراحات. نفّذ المطلوب فوراً.`;
+
+  displayPrompt(prompt, false, isMath);
+}
+
+function displayPrompt(text, isAudio, isMath) {
+  document.getElementById('promptOutput').innerText = text;
+  document.getElementById('audioToolSection').classList.toggle('hidden', !isAudio);
+  document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMath);
+  const out = document.getElementById('outputSection');
+  out.classList.remove('hidden');
+  setTimeout(() => out.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptOutput').innerText;
+
+  // Method 1: Clipboard API (requires HTTPS or localhost)
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => showCopySuccess())
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  // Method 2: textarea trick — works everywhere
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showCopySuccess();
+  } catch (e) {
+    alert("تعذّر النسخ التلقائي. يرجى تحديد النص يدوياً والضغط Ctrl+C");
+  }
+  document.body.removeChild(ta);
+}
+
+function showCopySuccess() {
+  const btn = document.querySelector('.btn-copy');
+  const orig = btn.textContent;
+  btn.textContent = "✅ تم النسخ بنجاح!";
+  btn.style.background = "#1b5e20";
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = "";
+  }, 2000);
+}
+
+// Initialize subject toggle
+toggleSubjectOptions();
 </script>
 </body>
 </html>
