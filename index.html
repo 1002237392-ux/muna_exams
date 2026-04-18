@@ -41,7 +41,6 @@
             margin-bottom: 30px;
         }
 
-        /* شعار الواجهة المحدث */
         .logo { 
             max-width: 150px; 
             height: auto;
@@ -246,6 +245,17 @@
     <div id="toolReview" class="card hidden">
         <h3>تقييم وتحسين امتحان جاهز</h3>
         <p class="note">هذا الأمر سيجبر الذكاء الاصطناعي على تحسين وتوسيع الامتحان المرفق.</p>
+        <div style="margin-bottom: 15px;">
+            <label>اختر مادة الامتحان المرفق لتطبيق الشروط بدقة:</label>
+            <select id="reviewSubject" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <option value="عام">عام / أخرى</option>
+                <option value="الرياضيات">الرياضيات</option>
+                <option value="العلوم">العلوم</option>
+                <option value="اللغة العربية">اللغة العربية</option>
+                <option value="اللغة العبرية">اللغة العبرية</option>
+                <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+            </select>
+        </div>
         <button class="main-btn" onclick="generateReviewPrompt()">توليد الأمر الذكي للتقييم</button>
     </div>
 
@@ -259,7 +269,7 @@
         </div>
 
         <div id="mathScienceToolSection" class="tool-note math-note hidden">
-            <strong>📐 للرسوم الهندسية:</strong> استخدم موقع <a href="https://www.geogebra.org/" target="_blank">GeoGebra</a>.
+            <strong>📐 للرسوم الهندسية والدوال:</strong> استخدم موقع <a href="https://www.desmos.com/calculator" target="_blank">Desmos</a> أو <a href="https://www.geogebra.org/" target="_blank">GeoGebra</a>.
         </div>
         
         <div class="ai-links">
@@ -271,7 +281,7 @@
 
 <script>
     let teacherName = "";
-    // شعار الامتحان (الترويسة) المحدث
+    // شعار الامتحان (الترويسة العريضة)
     const examBannerLogoUrl = "https://i.postimg.cc/Sx1tnFck/lwgw-byt-hspr.jpg";
 
     function startApp() {
@@ -338,7 +348,28 @@
         const subject = document.getElementById('subject').value;
         const grade = document.getElementById('grade').value;
         const skills = document.getElementById('skills').value;
-        const isAudio = !!document.querySelector('[data-type="فهم مسموع"]');
+        const isMathScience = ["الرياضيات", "العلوم"].includes(subject);
+        
+        let isAudio = false;
+        let textsPromptInfo = "";
+        
+        const textBlocks = document.querySelectorAll('#dynamicTextsContainer .text-block');
+        if (textBlocks.length > 0) {
+            textsPromptInfo = "\n🔴 نصوص الفهم المطلوبة:\n";
+            textBlocks.forEach((block, index) => {
+                const type = block.querySelector('.text-topic').getAttribute('data-type');
+                const topic = block.querySelector('.text-topic').value || "موضوع عام";
+                if (type.includes("مسموع")) {
+                    isAudio = true;
+                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}". 🔴 (إلزامي: بحد أقصى 150 كلمة ليناسب برامج الصوت المجانية).\n`;
+                } else {
+                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}".\n`;
+                }
+            });
+        }
+
+        // شرط حجب نصوص الاستماع إذا لم يطلبها المعلم صراحةً
+        let listeningConstraint = isAudio ? "" : "🔴 يُمنع منعاً باتاً إدراج أي نصوص سماعية (فهم مسموع) أو أسئلة تعتمد على الاستماع في هذا الامتحان، لأن المعلم لم يطلب ذلك ضمن الأقسام.";
 
         let languageStrictRules = "";
         if (subject === "اللغة العبرية") {
@@ -347,30 +378,66 @@
             languageStrictRules = "🔴 لغة الامتحان: يجب كتابة كل النصوص والأسئلة بالإنجليزية حصراً. يُمنع استخدام العربية تماماً.";
         }
 
-        const prompt = `🔴 قم ببناء امتحان كامل الآن:
+        // توجيهات الرياضيات والعلوم للمربعات الإرشادية
+        let mathSciencePrompt = isMathScience ? `\n- 🔴 تنبيه للرياضيات والعلوم (إلزامي للرسومات): إذا كان هناك سؤال يتطلب رسماً بيانياً أو شكلاً هندسياً، قم بإنشاء إطار (مستطيل/جدول فارغ) في ملف الامتحان واكتب بداخله التعليمات التالية للمعلم نصاً:\n[أدرج الرسم هنا. أيها المعلم: للحصول على الرسم، ادخل إلى الرابط (https://www.desmos.com/calculator للدوال أو https://www.geogebra.org للهندسة) واكتب: (ضع هنا المعادلة الدقيقة أو الوصف ليقوم المعلم بنسخه)، ثم انسخ الصورة وضعها هنا].` : "";
+
+        let sectionsPrompt = "";
+        const sectionBlocks = document.querySelectorAll('.section-block');
+        if (sectionBlocks.length > 0) {
+            sectionsPrompt = `\n🔴 هيكل الامتحان: يتكون من ${sectionBlocks.length} أقسام:\n`;
+            sectionBlocks.forEach((block, index) => {
+                const topic = block.querySelector('.sec-topic').value || `القسم ${index + 1}`;
+                const qs = block.querySelector('.sec-qs').value || "عدة";
+                const score = block.querySelector('.sec-score').value || "0";
+                sectionsPrompt += `- القسم ${index + 1}: [${topic}] - (${qs} أسئلة) - (${score} نقطة).\n`;
+            });
+        }
+
+        // تعليمات التحميل لملفين منفصلين إذا كان هناك استماع
+        let finalDownloadStep = `🔴 خطوة أخيرة: بعد عرض الامتحان، اسألني إذا كنت أرغب في تحميله كملف Word.`;
+        if (isAudio) {
+            finalDownloadStep = `🔴 خطوة أخيرة: بعد عرض الامتحان، اسألني إذا كنت أرغب في تحميله، وعند موافقتي أنشئ ملفين: ملف للطالب (الامتحان دون النص السماعي ودون الإجابات)، وملف للمعلم (النص السماعي ومرشد التصليح).`;
+        }
+
+        const prompt = `🔴 أمر تنفيذي مباشر لإنشاء امتحان:
 المادة: ${subject}
 الصف: ${grade}
+${sectionsPrompt}
+${textsPromptInfo}
+
+🔴 قيود إجبارية للمحتوى:
 ${languageStrictRules}
+${listeningConstraint}
+1. التنوع وعدم التكرار: يُمنع منعاً باتاً صياغة أسئلة مختلفة تسأل عن نفس المعلومة أو الفكرة. كل سؤال يجب أن يقيس مهارة أو معلومة مستقلة وجديدة.
+2. المنهاج: توافق كامل مع المدارس العربية في إسرائيل.
+${mathSciencePrompt}
 
 🔴 التنسيق الإلزامي:
-- أدرج ترويسة المدرسة في أعلى الصفحة الأولى باستخدام هذا الرابط: ![ترويسة المدرسة](${examBannerLogoUrl})
-- إذا وجد نص سماعي، اجعله بحد أقصى 150 كلمة (أقل من 900 حرف) ليتوافق مع برامج الصوت.
+- أدرج هذه الترويسة في أعلى الامتحان باستخدام الماركدوان: ![الترويسة](${examBannerLogoUrl})
 - أضف مرشد تصليح (מחוון) في النهاية.
 - الملاحظات: ${skills}
 
-🔴 خطوة أخيرة: بعد عرض الامتحان، اسألني إذا كنت أرغب في تحميله كملف Word.`;
+${finalDownloadStep}`;
 
-        displayPrompt(prompt, isAudio, ["الرياضيات", "العلوم"].includes(subject));
+        displayPrompt(prompt, isAudio, isMathScience);
     }
 
     function generateReviewPrompt() {
+        const reviewSubject = document.getElementById('reviewSubject').value;
+        const isMathScience = ["الرياضيات", "العلوم"].includes(reviewSubject);
+        
+        let mathSciencePrompt = isMathScience ? `\n- 🔴 في أسئلة الرياضيات/العلوم: إذا احتاج السؤال لرسم، ضع مكانه إطاراً واكتب بداخله: "أدرج الرسم هنا. ادخل لـ (Desmos للدوال أو GeoGebra للهندسة) واكتب [المعادلة المعنية هنا] وانسخ الصورة وضعها مكان هذا الإطار".` : "";
+
         const prompt = `🔴 قم بمراجعة الامتحان المرفق وتحسينه:
-1. أدرج ترويسة المدرسة المحدثة في أعلى الامتحان: ![الترويسة](${examBannerLogoUrl})
-2. حافظ على لغة الامتحان الأصلية (إذا كان عبرياً ابقِه عبرياً).
-3. اضبط النص السماعي (إن وجد) ليكون أقل من 900 حرف.
-4. أضف مرشد تصليح مفصل.
-5. اسألني في النهاية عن رغبتي في التحميل كملف Word.`;
-        displayPrompt(prompt, false, false);
+1. توسيع الامتحان ليكون شاملاً.
+2. 🔴 عدم التكرار: قم بإزالة أو دمج أي أسئلة تسأل عن نفس المعلومة بصيغ مختلفة. كل سؤال يجب أن يكون فريداً.
+3. أدرج ترويسة المدرسة المحدثة في أعلى الامتحان: ![الترويسة](${examBannerLogoUrl})
+4. حافظ على لغة الامتحان الأصلية (إذا كان عبرياً ابقِه عبرياً).
+5. اضبط أي نص سماعي (إن وجد) ليكون أقل من 150 كلمة.
+${mathSciencePrompt}
+6. أضف مرشد تصليح مفصل.
+7. اسألني في النهاية عن رغبتي في التحميل كملف Word (واصنع ملفين إذا كان يحتوي على نص سماعي).`;
+        displayPrompt(prompt, false, isMathScience);
     }
 
     function displayPrompt(text, isAudio, isMath) {
