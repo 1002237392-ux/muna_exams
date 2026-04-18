@@ -333,14 +333,18 @@
         document.getElementById('summaryBar').classList.toggle('error', score > 100);
     }
 
+    // هنا قمت بإعادة خانة (عدد الأسطر) التي سقطت سهواً
     function addTextBlock(type) {
         const container = document.getElementById('dynamicTextsContainer');
         const block = document.createElement('div');
         block.className = 'text-block';
         block.innerHTML = `
             <button type="button" class="delete-btn" onclick="this.parentElement.remove()">❌</button>
-            <h4>${type}</h4>
-            <input type="text" class="text-topic" placeholder="الموضوع..." data-type="${type}">
+            <h4 style="margin-top: 0; color: #333;">${type}</h4>
+            <div style="display: flex; gap: 10px;">
+                <div style="flex: 2;"><input type="text" class="text-topic" placeholder="موضوع النص..." data-type="${type}"></div>
+                <div style="flex: 1;"><input type="number" class="text-lines" placeholder="عدد الأسطر"></div>
+            </div>
         `;
         container.appendChild(block);
     }
@@ -360,11 +364,14 @@
             textBlocks.forEach((block, index) => {
                 const type = block.querySelector('.text-topic').getAttribute('data-type');
                 const topic = block.querySelector('.text-topic').value || "موضوع عام";
+                const lines = block.querySelector('.text-lines').value; // استرجاع قيمة عدد الأسطر
+                
                 if (type.includes("مسموع")) {
                     isAudio = true;
                     textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}". 🔴 (إلزامي: بحد أقصى 150 كلمة ليناسب برامج الصوت المجانية).\n`;
                 } else {
-                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}".\n`;
+                    let lengthRule = lines ? `طوله حوالي ${lines * 12} كلمة (ما يعادل ${lines} أسطر)` : "طول مناسب";
+                    textsPromptInfo += `${index + 1}. نص [${type}] حول: "${topic}". (${lengthRule}).\n`;
                 }
             });
         }
