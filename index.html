@@ -3,9 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المنصة الذكية للتقييم</title>
+<title>المنصة الذكية لدعم التقييم والقياس - بناء الامتحانات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- ═══════════════════════════════════════════════════════
+     [FIX #2] MathJax — دعم المعادلات الرياضية والعلمية
+     يعالج صيغ LaTeX مثل: $x^2$ أو \( E=mc^2 \) أو $$\frac{a}{b}$$
+     ═══════════════════════════════════════════════════════ -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],   // صيغة inline: $x^2$
+      displayMath: [['$$', '$$'], ['\\[', '\\]']], // صيغة display: $$\frac{a}{b}$$
+      tags: 'ams'
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        // نُطلق MathJax تلقائياً كلما تغيّر محتوى صندوق الخرج
+        window._mathJaxReady = true;
+      }
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+
+<!-- ═══════════════════════════════════════════════════════
+     [FIX #3] Mermaid.js — دعم الرسوم البيانية والمخططات
+     يحوّل كود مثل: ```mermaid flowchart TD ...```
+     إلى رسم بياني مرئي تلقائياً
+     ═══════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false, // نتحكم يدوياً بوقت التشغيل
+    theme: 'default',
+    rtl: false,         // Mermaid لا تدعم RTL كاملاً — نتركها LTR
+    fontFamily: 'Cairo, sans-serif',
+    securityLevel: 'loose'
+  });
+</script>
+
 <style>
 :root {
   --primary: #1a365d;
@@ -457,6 +499,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 .note-math { background: #e3f2fd; border: 1.5px solid #90caf9; color: #0d47a1; }
 
 /* ─── OUTPUT ─── */
+/* [FIX #1] base output box — direction يُضبط ديناميكياً عبر .dir-rtl / .dir-ltr */
 .output-box {
   background: var(--surface-2);
   border: 1.5px solid var(--border-strong);
@@ -467,13 +510,71 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
   line-height: 1.9;
   white-space: pre-wrap;
   word-break: break-word;
-  direction: rtl;
-  text-align: right;
   color: var(--text);
   margin-top: 4px;
-  max-height: 480px;
+  max-height: 600px;
   overflow-y: auto;
 }
+
+/* [FIX #1] RTL — العربية والعبرية */
+.output-box.dir-rtl {
+  direction: rtl;
+  text-align: right;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* [FIX #1] LTR — الإنجليزية */
+.output-box.dir-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* [FIX #2] معادلات رياضية display */
+.output-box .math-display-block {
+  display: block;
+  text-align: center;
+  margin: 12px 0;
+  direction: ltr;
+  font-size: 1.1em;
+  overflow-x: auto;
+}
+
+/* MathJax inline دائماً LTR */
+.output-box mjx-container {
+  display: inline-block;
+  direction: ltr !important;
+  unicode-bidi: embed;
+}
+
+/* [FIX #3] حاوية Mermaid */
+.output-box .mermaid-wrapper {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin: 12px 0;
+  direction: ltr;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.output-box .mermaid-wrapper svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* badge لغة الخرج */
+.lang-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.lang-badge.rtl-badge { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.lang-badge.ltr-badge { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
 
 /* ─── AI BUTTONS ─── */
 .ai-row {
@@ -571,7 +672,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 <!-- HERO -->
 <div class="hero">
   <img src="https://i.postimg.cc/G3ghK9PH/sml-byt-hspr.png" alt="شعار المدرسة" class="hero-logo" onerror="this.style.display='none'">
-  <h1>المنصة الذكية لدعم التقييم والقياس</h1>
+  <h1>المنصة الذكية لدعم التقييم والقياس - بناء الامتحانات</h1>
   <div class="hero-divider"></div>
   <div class="hero-subtitle">بإرشاد مركزة التقييم: منى مصطفى</div>
   <div class="hero-quote">"زميلي المعلم، زميلتي المعلمة.. يسعدني جداً أن أكون بجانبكم لنرتقي معاً بجودة تقييم طلابنا وندعم مسيرتهم التعليمية بكل مهنية وحب."</div>
@@ -805,15 +906,68 @@ function generateCreatePrompt() {
   const grade = document.getElementById('grade').value;
   const skills = document.getElementById('skills').value;
   const isMathScience = ["الرياضيات","الفيزياء","الكيمياء","البيولوجيا"].includes(subject);
+  const isEnglish = subject === "اللغة الإنجليزية";
+  const isHebrew  = subject === "اللغة العبرية";
 
-  let wordFormattingRules = "";
-  if (subject === "اللغة الإنجليزية") {
-    wordFormattingRules = `\n🔴 إعدادات برمجية إلزامية لملف الوورد:\n1. اتجاه النص (LTR): يجب تعيين اتجاه الوثيقة والفقرات من اليسار إلى اليمين.\n2. نوع الخط: استخدم "Arial" أو "Times New Roman".\n3. إيقاف خاصية BIDI تماماً.`;
+  // ═══════════════════════════════════════════
+  // تعليمات اللغة والترميز حسب المادة
+  // ═══════════════════════════════════════════
+  let langEncodingRules = "";
+  if (isEnglish) {
+    langEncodingRules = `
+🔴 لغة الامتحان: الإنجليزية حصراً. يُمنع استخدام العربية تماماً.
+🔴 إعدادات ملف الوورد الإلزامية (English LTR):
+   • document direction: LTR (Left-to-Right)
+   • paragraph alignment: Left
+   • font: Arial or Times New Roman (12pt)
+   • encoding: UTF-8
+   • ⚠️ CRITICAL: Do NOT enable BiDi/RTL on any paragraph or run. Pure LTR document.`;
+  } else if (isHebrew) {
+    langEncodingRules = `
+🔴 לשון הבחינה: עברית בלבד. אסור להשתמש בערבית בכלל.
+🔴 הגדרות חובה לקובץ Word (עברית RTL):
+   • כיוון המסמך: RTL (ימין לשמאל)
+   • יישור פסקאות: ימין
+   • גופן: Arial או Tahoma (12pt)
+   • קידוד: UTF-8
+   • הפעל bidi=true על כל run עברי
+   • ⚠️ חשוב ביותר: ודא שכל תו עברי מחובר ומוצג כהלכה — אין תווים שבורים או הפוכים.
+   • הפעל את Unicode Bidirectional Algorithm (UBA) בצורה נכונה.`;
   } else {
-    const mathRule = isMathScience ? "\n4. 🔴 للمعادلات الرياضية: ضعها في (Runs) منفصلة بدون BIDI، واضبط اتجاهها LTR." : "";
-    wordFormattingRules = `\n🔴 إعدادات برمجية إلزامية لملف الوورد:\n1. اتجاه النص (RTL): يجب تعيين الوثيقة من اليمين إلى اليسار.\n2. نوع الخط: "Arial" أو "Tahoma" كخط أساسي.\n3. تفعيل خاصية (bidi) في الـ (Runs) للكلمات العربية/العبرية.${mathRule}`;
+    // عربي وكل المواد الأخرى
+    const mathRule = isMathScience
+      ? `\n   • المعادلات الرياضية: ضعها في (runs) منفصلة باتجاه LTR داخل المستند RTL.\n   • الأرقام والرموز العلمية: اتجاهها LTR دائماً حتى داخل النص العربي.`
+      : "";
+    langEncodingRules = `
+🔴 لغة الامتحان: العربية حصراً (إلا إذا حددت غير ذلك).
+🔴 إعدادات ملف الوورد الإلزامية (عربي RTL):
+   • اتجاه المستند: RTL (من اليمين إلى اليسار)
+   • محاذاة الفقرات: يمين
+   • الخط: Arial أو Tahoma (12pt)
+   • الترميز: UTF-8
+   • فعّل bidi=true على كل run عربي
+   • ⚠️ بالغ الأهمية: يجب أن تظهر الحروف العربية متصلة وبالترتيب الصحيح — ممنوع منعاً باتاً أي أحرف منفصلة أو مقلوبة.
+   • استخدم Arabic Text Shaping وUnicode Bidirectional Algorithm بشكل صحيح.${mathRule}`;
   }
 
+  // ═══════════════════════════════════════════
+  // بناء أقسام الامتحان
+  // ═══════════════════════════════════════════
+  let sectPart = "";
+  const secBlocks = document.querySelectorAll('.section-block');
+  if (secBlocks.length > 0) {
+    sectPart = `\n🔴 هيكل الامتحان (${secBlocks.length} أقسام):\n`;
+    secBlocks.forEach((b, i) => {
+      const t = b.querySelector('.sec-topic').value || `القسم ${i+1}`;
+      const q = b.querySelector('.sec-qs').value || "عدة";
+      const s = b.querySelector('.sec-score').value || "0";
+      sectPart += `- القسم ${i+1}: [${t}] — ${q} أسئلة — ${s} نقطة.\n`;
+    });
+  }
+
+  // ═══════════════════════════════════════════
+  // النصوص / القطع
+  // ═══════════════════════════════════════════
   let isAudio = false;
   let textsInfo = "";
   const textBlocks = document.querySelectorAll('#dynamicTextsContainer .text-block');
@@ -834,24 +988,9 @@ function generateCreatePrompt() {
   }
 
   const noAudioRule = isAudio ? "" : "🔴 يُمنع منعاً باتاً إدراج أي نصوص سماعية لأن المعلم لم يطلب ذلك.";
-
-  let langRule = "";
-  if (subject === "اللغة العبرية") langRule = "🔴 لغة الامتحان: العبرية حصراً. يُمنع استخدام العربية تماماً.";
-  else if (subject === "اللغة الإنجليزية") langRule = "🔴 لغة الامتحان: الإنجليزية حصراً. يُمنع استخدام العربية تماماً.";
-
-  const mathPart = isMathScience ? `\n- 🔴 الرسوم البيانية: إذا احتاج سؤال لرسم، ضع إطاراً فارغاً واكتب بداخله:\n[أدرج الرسم هنا. للحصول عليه ادخل desmos.com للدوال أو geogebra.org للهندسة].` : "";
-
-  let sectPart = "";
-  const secBlocks = document.querySelectorAll('.section-block');
-  if (secBlocks.length > 0) {
-    sectPart = `\n🔴 هيكل الامتحان (${secBlocks.length} أقسام):\n`;
-    secBlocks.forEach((b, i) => {
-      const t = b.querySelector('.sec-topic').value || `القسم ${i+1}`;
-      const q = b.querySelector('.sec-qs').value || "عدة";
-      const s = b.querySelector('.sec-score').value || "0";
-      sectPart += `- القسم ${i+1}: [${t}] — ${q} أسئلة — ${s} نقطة.\n`;
-    });
-  }
+  const mathPart = isMathScience
+    ? `\n- 🔴 الرسوم البيانية: إذا احتاج سؤال لرسم، ضع إطاراً فارغاً واكتب بداخله:\n[أدرج الرسم هنا. للحصول عليه ادخل desmos.com للدوال أو geogebra.org للهندسة].`
+    : "";
 
   const finalStep = isAudio
     ? `🔴 خطوة التنفيذ الفوري (إجبارية): جهّز ملفين Word للتحميل فوراً:\n1. ملف الطالب (الامتحان دون النص السماعي ودون الإجابات).\n2. ملف المعلم (النص السماعي كاملاً + مرشد التصليح المفصل).`
@@ -864,38 +1003,61 @@ ${sectPart}
 ${textsInfo}
 
 🔴 قيود إجبارية للمحتوى:
-${langRule}
 ${noAudioRule}
 1. التنوع: كل سؤال يقيس مهارة أو معلومة مستقلة ومختلفة. يُمنع التكرار.
 2. المنهاج: توافق كامل مع المدارس العربية في إسرائيل.
 ${mathPart}
 
-🔴 التنسيق الإلزامي:
-1. السطر الأول في الملفات يحتوي على كود الترويسة:
-![ترويسة المدرسة](${examBannerLogoUrl})
+${langEncodingRules}
+
+🔴 ترويسة الملفات — إلزامية في كلا الملفين:
+⚠️ يجب أن يكون السطر الأول في كلا ملفي Word هو صورة شعار المدرسة بالضبط:
+   • رابط الشعار: ${examBannerLogoUrl}
+   • طريقة الإدراج في Python-docx: استخدم document.add_picture() مع هذا الرابط مباشرة.
+   • عرض الصورة: 16 سم، محاذاة: وسط.
+   • ⛔ ممنوع استبدال الشعار بأي نص أو placeholder مثل "SCHOOL LOGO".
+   • بعد الشعار مباشرة: خط فاصل، ثم اسم المدرسة، ثم بيانات الامتحان.
 - ملاحظات المعلم: ${skills}
-${wordFormattingRules}
 
 ${finalStep}
 
 ⛔ تنبيه للذكاء الاصطناعي: يُمنع طرح أي أسئلة أو تقديم خيارات إضافية. نفّذ الأوامر فوراً وبشكل نهائي.`;
 
-  displayPrompt(prompt, isAudio, isMathScience);
+  displayPrompt(prompt, isAudio, isMathScience, subject);
 }
 
 function generateReviewPrompt() {
   const sub = document.getElementById('reviewSubject').value;
   const isMath = ["الرياضيات","الفيزياء","الكيمياء","البيولوجيا"].includes(sub);
+  const isEnglish = sub === "اللغة الإنجليزية";
+  const isHebrew  = sub === "اللغة العبرية";
 
-  let wfr = "";
-  if (sub === "اللغة الإنجليزية") {
-    wfr = `\n🔴 إعدادات الوورد:\n1. اتجاه LTR.\n2. خط Arial أو Times New Roman.\n3. إيقاف BIDI.`;
+  // تعليمات الترميز حسب المادة
+  let langEncodingRules = "";
+  if (isEnglish) {
+    langEncodingRules = `
+🔴 إعدادات ملف الوورد (English LTR):
+   • document direction: LTR | paragraph alignment: Left
+   • font: Arial or Times New Roman (12pt) | encoding: UTF-8
+   • ⚠️ Do NOT enable BiDi/RTL on any element.`;
+  } else if (isHebrew) {
+    langEncodingRules = `
+🔴 הגדרות Word (עברית RTL):
+   • כיוון: RTL | יישור: ימין | גופן: Arial/Tahoma (12pt) | קידוד: UTF-8
+   • bidi=true על כל run | Unicode Bidirectional Algorithm פעיל
+   • ⚠️ ודא שכל תו עברי מחובר ומוצג נכון — אסור תווים שבורים.`;
   } else {
-    const mr = isMath ? "\n4. المعادلات في Runs منفصلة باتجاه LTR." : "";
-    wfr = `\n🔴 إعدادات الوورد:\n1. اتجاه RTL.\n2. خط Arial أو Tahoma.\n3. تفعيل BIDI للعربية/العبرية.${mr}`;
+    const mr = isMath ? "\n   • المعادلات في runs منفصلة باتجاه LTR." : "";
+    langEncodingRules = `
+🔴 إعدادات ملف الوورد (عربي RTL):
+   • اتجاه: RTL | محاذاة: يمين | خط: Arial/Tahoma (12pt) | ترميز: UTF-8
+   • bidi=true على كل run عربي | Unicode Bidirectional Algorithm فعّال
+   • ⚠️ الحروف العربية يجب أن تكون متصلة وبالترتيب الصحيح — ممنوع أحرف منفصلة أو مقلوبة.${mr}`;
   }
 
-  const mathPart = isMath ? `\n- في أسئلة الرسوم: ضع إطاراً واكتب بداخله "ادخل Desmos أو GeoGebra واحضر الرسم هنا".` : "";
+  const mathPart = isMath
+    ? `\n- في أسئلة الرسوم: ضع إطاراً واكتب بداخله "ادخل Desmos أو GeoGebra واحضر الرسم هنا".`
+    : "";
 
   const prompt = `🔴 راجع الامتحان المرفق وحسّنه وفق القواعد التالية:
 1. وسّع الامتحان ليكون شاملاً وغنياً.
@@ -905,10 +1067,15 @@ function generateReviewPrompt() {
 ${mathPart}
 5. تأكد من توافقه مع منهاج المدارس العربية في إسرائيل.
 
-🔴 التنسيق الإلزامي:
-1. السطر الأول يبدأ بهذا الكود:
-![ترويسة المدرسة](${examBannerLogoUrl})
-${wfr}
+${langEncodingRules}
+
+🔴 ترويسة الملفات — إلزامية في كلا الملفين:
+⚠️ يجب أن يكون السطر الأول في كلا ملفي Word هو صورة شعار المدرسة بالضبط:
+   • رابط الشعار: ${examBannerLogoUrl}
+   • طريقة الإدراج في Python-docx: استخدم document.add_picture() مع هذا الرابط مباشرة.
+   • عرض الصورة: 16 سم، محاذاة: وسط.
+   • ⛔ ممنوع استبدال الشعار بأي نص أو placeholder مثل "SCHOOL LOGO".
+   • بعد الشعار مباشرة: خط فاصل، ثم اسم المدرسة، ثم بيانات الامتحان.
 
 🔴 خطوة التنفيذ الفوري (إجبارية): جهّز ملفين Word للتحميل فوراً:
 1. ملف الطالب (الامتحان المعدّل دون الإجابات).
@@ -916,13 +1083,125 @@ ${wfr}
 
 ⛔ تنبيه: يُمنع طرح أي أسئلة أو اقتراحات. نفّذ المطلوب فوراً.`;
 
-  displayPrompt(prompt, false, isMath);
+  displayPrompt(prompt, false, isMath, sub);
 }
 
-function displayPrompt(text, isAudio, isMath) {
-  document.getElementById('promptOutput').innerText = text;
+// ═══════════════════════════════════════════════════════════════
+// [FIX #1] كشف اتجاه النص تلقائياً بحسب المادة والمحتوى
+// الأولوية: المادة المختارة > كشف Unicode للنص
+// ═══════════════════════════════════════════════════════════════
+function detectTextDirection(text, subject) {
+  // إذا كانت المادة إنجليزية → LTR فوراً
+  if (subject === "اللغة الإنجليزية") return 'ltr';
+
+  // إذا كانت المادة عربية أو عبرية أو علمية → RTL
+  const rtlSubjects = [
+    "اللغة العربية", "اللغة العبرية",
+    "الرياضيات", "الفيزياء", "الكيمياء", "البيولوجيا",
+    "الجغرافيا", "التاريخ", "المدنيات", "الدين"
+  ];
+  if (rtlSubjects.includes(subject)) return 'rtl';
+
+  // fallback: كشف Unicode — إذا يحتوي على أحرف عربية/عبرية
+  const rtlPattern = /[\u0600-\u06FF\u0590-\u05FF\u0750-\u077F]/;
+  return rtlPattern.test(text) ? 'rtl' : 'ltr';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// [FIX #3] معالجة كود Mermaid داخل النص وتحويله لرسوم بيانية
+// يبحث عن كتل: ```mermaid ... ``` أو [mermaid]...[/mermaid]
+// ═══════════════════════════════════════════════════════════════
+async function renderMermaidBlocks(container) {
+  // البحث عن كتل ```mermaid في النص كـ text nodes
+  const rawText = container.innerText || container.textContent;
+
+  // نتحقق إذا يوجد كود Mermaid أصلاً
+  if (!rawText.includes('mermaid')) return;
+
+  // نحوّل النص الخام إلى HTML مع استبدال كتل mermaid بـ divs
+  let html = container.innerHTML;
+
+  // Regex للبحث عن ```mermaid...``` (مع أو بدون newlines)
+  const mermaidRegex = /```mermaid\s*([\s\S]*?)```/gi;
+  let mermaidCounter = 0;
+
+  html = html.replace(mermaidRegex, (match, code) => {
+    mermaidCounter++;
+    const cleanCode = code.trim()
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
+    return `<div class="mermaid-wrapper"><div class="mermaid" id="mermaid-${mermaidCounter}">${cleanCode}</div></div>`;
+  });
+
+  if (mermaidCounter > 0) {
+    // نحتاج نوقف white-space:pre-wrap مؤقتاً لعرض HTML
+    container.style.whiteSpace = 'normal';
+    container.innerHTML = html;
+
+    // تشغيل Mermaid على الـ divs الجديدة
+    try {
+      await mermaid.run({
+        nodes: document.querySelectorAll('.mermaid-wrapper .mermaid')
+      });
+    } catch (e) {
+      console.warn('[Mermaid] خطأ في الرسم:', e);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// [FIX #2] تشغيل MathJax على المحتوى الجديد
+// ═══════════════════════════════════════════════════════════════
+function renderMathJax(container) {
+  // نتحقق إذا يوجد LaTeX في النص
+  const text = container.textContent;
+  const hasMath = /(\$[\s\S]+?\$)|(\\\([\s\S]+?\\\))|(\\\[[\s\S]+?\\\])|(\\[a-zA-Z]+\{)/.test(text);
+
+  if (!hasMath) return;
+
+  if (window._mathJaxReady && window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([container]).catch(err => {
+      console.warn('[MathJax] خطأ في عرض المعادلة:', err);
+    });
+  } else {
+    // MathJax لم يُحمَّل بعد — ننتظره
+    document.addEventListener('MathJax-ready', () => {
+      MathJax.typesetPromise([container]);
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// displayPrompt — الدالة الرئيسية المعدَّلة
+// ═══════════════════════════════════════════════════════════════
+async function displayPrompt(text, isAudio, isMath, subjectOverride) {
+  const box = document.getElementById('promptOutput');
+
+  // [FIX #1] — تحديد اتجاه النص: نستخدم subjectOverride إذا مُرِّر، وإلا نقرأ من الـ select
+  const subject = subjectOverride ||
+    (document.getElementById('subject') ? document.getElementById('subject').value : '') ||
+    (document.getElementById('reviewSubject') ? document.getElementById('reviewSubject').value : '');
+
+  const dir = detectTextDirection(text, subject);
+  box.classList.remove('dir-rtl', 'dir-ltr');
+  box.classList.add(dir === 'ltr' ? 'dir-ltr' : 'dir-rtl');
+
+  // عرض الكتلة التوجيهية
   document.getElementById('audioToolSection').classList.toggle('hidden', !isAudio);
   document.getElementById('mathScienceToolSection').classList.toggle('hidden', !isMath);
+
+  // نضع النص أولاً كـ text خالص (آمن)
+  box.style.whiteSpace = 'pre-wrap';
+  box.innerText = text;
+
+  // [FIX #3] — نعالج كتل Mermaid (إن وجدت)
+  await renderMermaidBlocks(box);
+
+  // [FIX #2] — نُشغّل MathJax (إن وجدت معادلات LaTeX)
+  renderMathJax(box);
+
+  // إظهار قسم الخرج والتمرير إليه
   const out = document.getElementById('outputSection');
   out.classList.remove('hidden');
   setTimeout(() => out.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
